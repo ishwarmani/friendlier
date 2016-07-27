@@ -1,12 +1,15 @@
 package com.tcs.friendlier.pojo;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class User {
@@ -21,9 +24,11 @@ public class User {
 	private String name, password, role = "User";
 
 	private String gender, phone;
+	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	private byte[] photo;
-
+	
+	private Set<User> friends;
 	public int getId() {
 		return id;
 	}
@@ -95,4 +100,14 @@ public class User {
 	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
+
+	public Set<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Set<User> friends) {
+		this.friends = friends;
+	}
+	
+	
 }
