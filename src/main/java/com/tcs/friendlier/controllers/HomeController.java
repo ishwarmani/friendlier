@@ -49,7 +49,7 @@ public class HomeController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/loginRegister", method = RequestMethod.GET)
+	@RequestMapping(value = { "/loginRegister", "/login", "register" }, method = RequestMethod.GET)
 	public ModelAndView register(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
@@ -97,9 +97,8 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute User dummy,
-			@RequestParam("email_id") String email_id, @RequestParam("password") String password,
-			HttpSession httpSession) {
+	public ModelAndView login(@ModelAttribute User dummy, @RequestParam("email_id") String email_id,
+			@RequestParam("password") String password, HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (user != null) {
