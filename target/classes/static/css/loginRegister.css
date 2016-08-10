@@ -70,7 +70,7 @@ h1 {
   margin: 0 0 40px;
 }
 
-label {
+label:not(.nostyle) {
   position: absolute;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
@@ -101,7 +101,7 @@ label.highlight {
   color: #ffffff;
 }
 
-input, textarea {
+input:not(.nostyle) , textarea {
   font-size: 22px;
   display: block;
   width: 100%;

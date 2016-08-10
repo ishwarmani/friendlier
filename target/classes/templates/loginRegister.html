@@ -7,6 +7,14 @@
 <title>friendlier</title>
 <meta name="description" content="makes-the-world-a-friendlier-place"></meta>
 
+
+<!-- Previewing image before it gets upload -->
+<script class="jsbin"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 
@@ -38,26 +46,62 @@
 			<div id="signup">
 				<h1>Sign Up for Free</h1>
 
-				<form action="/" method="post">
+				<form action="/register" th:object="${user}" method="post">
 
 					<div class="field-wrap">
 						<label> Name<span class="req">*</span>
-						</label> <input type="text" required="required" autocomplete="off" />
+						</label> <input type="text" th:field="*{name}" required="required"
+							autocomplete="off" />
 					</div>
 
 					<div class="field-wrap">
 						<label> Email Address<span class="req">*</span>
-						</label> <input type="email" required="required" autocomplete="off" />
+						</label> <input type="email" th:field="*{email}" required="required"
+							autocomplete="off" />
 					</div>
 
 					<div class="field-wrap">
 						<label> Set A Password<span class="req">*</span>
-						</label> <input type="password" required="required" autocomplete="off" />
+						</label> <input type="password" th:field="*{password}" required="required"
+							autocomplete="off" />
 					</div>
 
+					<div class="field-wrap">
+						<label> Mobile Number </label> <input type="number"
+							th:field="*{phone}" maxlength="10"
+							oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+							autocomplete="off" />
+					</div>
+
+					<div class="top-row">
+						<div class="field-wrap">
+							<label class="radio-inline">Female</label><input class="nostyle"
+								type="radio" th:field="*{gender}" name="gender" value="female" />
+						</div>
+						<div class="field-wrap">
+							<label class="radio-inline">Male</label><input class="nostyle"
+								type="radio" th:field="*{gender}" name="gender" value="male" />
+						</div>
+					</div>
+
+					<div class="field-wrap">
+						<label></label><input type="date" th:field="*{dateOfBirth}"
+							class="form-control" />
+					</div>
+
+					<!-- <div class="field-wrap">
+						<input type="file" id="files" name="files[]" />
+						<output id="list"></output>
+					</div> -->
+
+					<div class="field-wrap">
+						<input type="file" th:field="*{photo}" onchange="readURL(this);" />
+						<img id="blah" src="#" alt="your image" hidden="hidden" />
+					</div>
 
 					<button type="submit" class="button button-block">Get
 						Started</button>
+
 
 				</form>
 
@@ -66,16 +110,17 @@
 			<div id="login">
 				<h1>Welcome Back!</h1>
 
-				<form action="/" method="post">
+				<form action="/login" method="post">
 
 					<div class="field-wrap">
-						<label> Email Address<span class="req">*</span>
-						</label> <input type="email" required="required" autocomplete="off" />
+						<label> Email Address/Id<span class="req">*</span>
+						</label> <input type="text" name="email_id" required="required" />
 					</div>
 
 					<div class="field-wrap">
 						<label> Password<span class="req">*</span>
-						</label> <input type="password" required="required" autocomplete="off" />
+						</label> <input type="password" name="password" required="required"
+							autocomplete="off" />
 					</div>
 
 					<p class="forgot">
@@ -101,6 +146,55 @@
 	<script src="js/bootstrap.min.js"></script>
 	<!-- custom JavaScript -->
 	<script src="js/loginRegister.js"></script>
+	<!-- Previewing image before it gets upload -->
+	<!-- <script>
+		function handleFileSelect(evt) {
+			var files = evt.target.files; // FileList object
+
+			// Loop through the FileList and render image files as thumbnails.
+			for (var i = 0, f; f = files[i]; i++) {
+
+				// Only process image files.
+				if (f.type.match('image.*')) {
+
+					var reader = new FileReader();
+
+					// Closure to capture the file information.
+					reader.onload = (function(theFile) {
+						return function(e) {
+							// Render thumbnail.
+							var span = document.createElement('span');
+							span.innerHTML = [ '<img class="thumb" src="',
+									e.target.result, '" title="',
+									escape(theFile.name), '"/>' ].join('');
+							document.getElementById('list').insertBefore(span,
+									null);
+						};
+					})(f);
+
+					// Read in the image file as a data URL.
+					reader.readAsDataURL(f);
+				}
+
+			}
+		}
+
+		document.getElementById('files').addEventListener('change',
+				handleFileSelect, false);
+	</script> -->
+	<script>
+		function readURL(input) {
+			if (input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					document.getElementById("blah").removeAttribute("hidden");
+					$('#blah').attr('src', e.target.result).width(200).height(
+							200);
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	</script>
 </body>
 
 </html>
