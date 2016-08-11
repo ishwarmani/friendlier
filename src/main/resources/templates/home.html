@@ -1,13 +1,268 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="utf-8"></meta>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>friendlier</title>
-<meta name="description" content="makes-the-world-a-friendlier-place"></meta>
+<title>index</title>
+
+<!-- jQuery -->
+	<script src="js/jquery-2.2.4.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+<!-- Previewing image before it gets upload -->
+<script class="jsbin"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+
+<link
+	href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600'
+	rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="css/index.css" />
 </head>
-<body>
-	<p>Hello</p>
-</body>
+   <body style="background-color:#f6fbff">
+    
+      <div class="row no-gutter">
+         <nav class="navbar navbar-default" role="navigation" style="background: #45bfbb;">
+            <div class="navbar-header" >
+              <a href="/"><img src="images/friendlier.png" style="height: 50px; margin-left: 40px; margin-top: 15px;" /> </a> 
+              <img src="images/sociable.png" style="height: 35px; margin-top: 35px;" />
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNav" aria-expanded="false">
+               		<span class="sr-only">Toggle navigation</span>
+               		<span class="icon-bar"></span>
+               		<span class="icon-bar"></span>
+               </button>
+           	</div>
+            <div class="collapse navbar-collapse pull-right" id="myNav">
+               <ul class="nav navbar-nav">
+                  <li class="buttons">
+                     <a href="#">
+                        <i class="fa fa-tachometer fa-lg" aria-hidden="true"></i>
+                        <!-- <img src="assets/icon_dashboard_hover.png" class="hover"> -->
+                        <b>Home</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover2">
+                     <a href="badge">
+                     <span class="fa-stack">
+                     <i class="fa fa-circle fa-stack-2x"></i>
+                     <i class="fa fa-star-o fa-stack-1x fa-inverse"></i>
+                     </span>
+                     <b>Profile</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover3">
+                     <a href="#">
+                        <i class="fa fa-wpforms fa-lg" aria-hidden="true"></i>
+                        <b>Friends</b>
+                     </a>
+                  </li>
+                  <li class="buttons">
+                     <a href="#">
+                        <span class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <b>Messages</b>
+                     </a>
+                  </li>
+               </ul>
+               <!-- code for user profile button and dropdwon -->
+                  <div class = "dropdown pull-right">
+                 	 <a class = "btn dropdown-toggle" id = "dLabel" data-toggle="modal" href="#myModal" data-direction='top-right'>
+                        <img class="userInfoIcon img-rounded" src="images/myimage.jpg"/>
+                     </a>
+                     <div class="modal right fade modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-body">
+                                 <h4>Your Profile</h4>
+                                 <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
+                                  <div class="pull-left">
+                                    Newer Name :  <label> ${loggedInUser.name}</label><br/>
+                                    Role &nbsp;: <label> ${loggedInUser.getRole()}</label><br/>
+                                    Phone No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getPhone()}</label><br/>
+                                    Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getEmail()}</label><br/>
+                                 </div>  
+                              </div>
+                              <div class="modal-footer">
+                                 <a class=" btn pull-right" href="/logout">Logout</a>
+                              </div>
+                           </div>
+                           <!-- modal-content -->
+                        </div>
+                        <!--modal-dialog -->
+                     </div>
+                     <!-- modal -->
+                  </div>
+            </div>
+         </nav>
+      </div>
+	
+		<!-- main body -->
+      <!-- karma section -->
+	  <div class="col-sm-7 col-md-7 col-lg-9">
+         <div class="row">
+         </div>
+         <div class="col-sm-12">
+            <div class="panel panel-default">
+               <div class="panel-heading" id="recog-heading" >
+                  <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                  
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b>What's on your mind</b>
+               </div>
+               <form action = "/status" method="post">
+                  <div class="panel-body" style="background: #435159;">
+                     <div class="row">
+                        <div class="col-sm-12">
+                        	<div class="form-group">
+                              <textarea  rows="6" class="form-control" id="reason" name ="content" style="background: #a0a9af;"></textarea>
+                              </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-footer" style="background: #24313c;">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <input type="submit" value = "update" class="btn btn-primary recogbt" style="background: #1ab188;"/>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <!-- end karma -->
+            <!-- wall of fame -->
+            <div class="panel panel-default">
+               <div class="panel-heading" style="background: #1ab188;">
+                  <div class="row">
+                     <div class="col-lg-3" >
+                        <i class="fa fa-list-alt fa-2x" aria-hidden="false"></i> &nbsp;<font color="white">News Feed</font>
+                     </div>
+                  </div>
+               </div>
+               <div class="panel-body">
+                  <div class="row" style="padding-top: 20px;">
+                    
+            
+            
+            <!-- <c:forEach  items="${recKarma}"  var="user">
+            <div class="col-xs-12" >
+            			<div class="col-xs-2 " style = "text-align: center;">
+                        <img class="imager wallOfFamePost"
+                        src="/images/myimage.jpg"/>
+                        
+                     </div>
+			             <strong> ${user.getRecieverName()} </strong>has received ${user.getStar()} 
+			             
+			             from <strong> ${user.getSenderName()} </strong> for Karma ${user.getKarma()} <br/>
+			                           Reason : ${user.getMessage()} <br/> 
+			                           Date : <i>${user.getDate()}</i><hr>  
+            
+            </div>
+            	
+            </c:forEach> -->
+                     
+                  </div>
+               </div>
+            </div>
+            <!-- end wall of fame -->
+         </div>
+      </div>
+  		
+  	<div class="col-sm-5 col-md-5 col-lg-3 ">
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >
+                <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<font color="white">Me</font>
+            </div>
+			<div class="panel-body">
+				<div class="col-xs-5">
+					<div class="row">
+						<img class="sideBatchPic" src="images/myimage.jpg"/>
+					</div>		
+				</div>
+				<div class="col-xs-7">
+					<div class="row">
+						<!-- <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> ${loggedInUser.getEmployeeName()} </b></a><br/> -->
+						<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Ishwar Mani Thapa </b></a><br/>
+					</div>
+						 <div class="row">
+							<div>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Friends</i>
+							</div>
+							<div>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Mention in Posts</i>
+							</div>
+							<div>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>settings</i>
+							</div>
+						</div> 
+				</div>
+	 		</div>
+ 		</div>
+ 	</div>
+ 	<!-- newer's list will be displayed here -->
+ 	<div class="row">
+ 		<div class="panel panel-default">
+ 			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >
+                <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<font color="white">Newer's</font>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+            	
+				<!-- <c:forEach  items="${newerBoard}"  var="user"> 	
+              		<div class = "col-xs-5">
+              		image of newer in this box
+              		<img class="sideBatchPic profile-pic"
+                        src="images/myimage.jpg"/>
+                        
+              		</div>
+                  <div class= "col-xs-7">
+                     <div class="row">
+                        <div class="row" style="height:30px">
+                        </div>
+                        <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${user.getName()}</a><br/>
+                     </div>
+                     <div class="row">
+                        <span>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="gold badge" src="/images/icon_gold_badge.png"/>
+                           
+                        </span>
+                        <span>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="silver badge" src="/images/icon_silver_badge.png"/>
+                           
+                        </span>
+                        <span>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="bronze badge" src="/images/icon_broze_badge.png"/>
+                           
+                        </span>
+                     </div>
+                    
+                     <div class="row">
+                        <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getGold() }</i>
+                        </span>
+                        <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getSilver() }</i>
+                        </span>
+                        <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getBronze() }</i>
+                        </span>
+                     </div>
+                  </div>
+                  close      </c:forEach> -->
+            </div>
+	 		</div>
+ 		</div>
+
+ 	</div>
+ 	</div>	
+   </body>
 </html>

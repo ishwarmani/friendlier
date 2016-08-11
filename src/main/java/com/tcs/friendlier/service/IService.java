@@ -9,5 +9,6 @@ public interface IService {
 	public User findUserById(int id, String password);
 
 	public User findUserByEmail(String email, String password);
-
+	
+	public boolean updateStatus(int writerId,String content);
 }

@@ -120,6 +120,7 @@ public class HomeController {
 			return modelAndView;
 		}
 		httpSession.setAttribute("loggedInUser", user);
+		System.out.println(user.getName());
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
 	}
@@ -129,5 +130,21 @@ public class HomeController {
 		httpSession.invalidate();
 		return "redirect:/loginRegister";
 	}
-
+	
+	@RequestMapping(value = "/status", method = RequestMethod.POST)
+	public ModelAndView statusUpdate(@ModelAttribute User dummy, @RequestParam("content") String content, HttpSession httpSession) {
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		System.out.println(content);
+		int writerId = user.getId();
+		boolean flag = service.updateStatus(writerId, content);
+		System.out.println(flag);
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+	}
 }

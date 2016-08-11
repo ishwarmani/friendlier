@@ -1,5 +1,7 @@
 package com.tcs.friendlier.dao.impl;
 
+import java.util.Date;
+
 import javax.persistence.PersistenceException;
 
 import org.hibernate.Criteria;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tcs.friendlier.dao.IUserDao;
+import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 
 @Repository
@@ -86,6 +89,27 @@ public class UserDaoImpl implements IUserDao {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean updateStatus(int writerId, String content) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		Post post = new Post();
+		post.setWriterId(writerId);
+		post.setContent(content);
+		post.setContentDate(new Date());
+		try {
+			session.save(post);
+			transaction.commit();
+			return true;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return false;
 	}
 
 }

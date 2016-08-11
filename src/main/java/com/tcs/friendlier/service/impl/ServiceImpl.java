@@ -34,4 +34,10 @@ public class ServiceImpl implements IService {
 		return userDao.findUserByEmail(email, password);
 	}
 
+	@Override
+	public boolean updateStatus(int writerId, String content) {
+		// TODO Auto-generated method stub
+		return userDao.updateStatus(writerId,content);
+	}
+
 }
