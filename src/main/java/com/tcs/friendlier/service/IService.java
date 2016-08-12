@@ -1,5 +1,7 @@
 package com.tcs.friendlier.service;
 
+import java.util.List;
+
 import com.tcs.friendlier.pojo.User;
 
 public interface IService {
@@ -11,4 +13,6 @@ public interface IService {
 	public User findUserByEmail(String email, String password);
 	
 	public boolean updateStatus(int writerId,String content);
+
+	public List<User> getUserList();
 }

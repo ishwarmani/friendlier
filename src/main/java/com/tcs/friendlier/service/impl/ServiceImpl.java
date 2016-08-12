@@ -1,5 +1,7 @@
 package com.tcs.friendlier.service.impl;
 
+import java.util.List;
+
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,12 @@ public class ServiceImpl implements IService {
 	public boolean updateStatus(int writerId, String content) {
 		// TODO Auto-generated method stub
 		return userDao.updateStatus(writerId,content);
+	}
+
+	@Override
+	public List<User> getUserList() {
+		// TODO Auto-generated method stub
+		return userDao.getUserList();
 	}
 
 }

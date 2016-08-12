@@ -24,6 +24,36 @@
 	href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600'
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="css/index.css" />
+
+<script>
+
+  	$(document).ready(function() {
+
+  		$('#searchMembers').autocomplete({
+  			serviceUrl: '${pageContext.request.contextPath}/getMembers',
+  			paramName: "name",
+  			delimiter: ",",
+  		    transformResult: function(response) {
+  		    	
+  		        return {
+  		        	
+  		            suggestions: $.map($.parseJSON(response), function(item) {
+  		            	
+  		                return { value: item.name  +","
+  		                	 + item.id,
+  		                	data: item.email };
+  		            })
+  		            
+  		        };
+  		        
+  		    }
+  		    
+  		});
+  		
+  	});
+  	
+  	</script>
+
 </head>
    <body style="background-color:#f6fbff">
     
@@ -174,7 +204,55 @@
          </div>
       </div>
   		
-  	<div class="col-sm-5 col-md-5 col-lg-3 ">
+  	<div class="col-lg-3 col-sm-5 col-md-5 ">
+  	<div class="row">
+	     <div class="panel-body">
+              <form class="form-inline" role="form">
+                  <div class="form-group">
+                      <input type="text" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
+                      <input type="button" value = "Search" class="btn btn-default" data-toggle="modal" data-target="#memberModal"/>
+                  </div>
+               </form>
+	       </div>  	
+        <div class="modal fade" id="memberModal" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div> -->
+        <div class="modal-body">
+          <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
+          <div class="pull-left">
+                Name :  <label> ${loggedInUser.name}</label><br/>
+                Role &nbsp;: <label> ${loggedInUser.getRole()}</label><br/>
+                Phone No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getPhone()}</label><br/>
+                Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getEmail()}</label><br/>
+                </div>  
+          
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-info pull-left">View Profile</button>
+        <button type="button" class="btn btn-success pull-left">Add Friend</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+	    </div>
+	  </div>
+	</div>
+  			<!-- <div class="panel-body">
+	  			<div class="input-group">
+	     		    <span class="input-group-addon">
+	      		      <i class="fa fa-search"></i>
+	      			</span>
+	         		 <input type="text" id = "searchMembers" placeholder = "Search members" class="form-control"/>
+	         	</div>
+	       
+	      </div> -->
+	  
 	<div class="row">
 		<div class="panel panel-default">
 			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >

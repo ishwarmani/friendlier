@@ -1,5 +1,6 @@
 package com.tcs.friendlier.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tcs.friendlier.pojo.User;
@@ -22,7 +24,9 @@ public class HomeController {
 
 	@Autowired
 	private IService service;
-
+	
+	List<User> data = new ArrayList<User>();
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
@@ -44,6 +48,10 @@ public class HomeController {
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("redirect:/loginRegister");
 			return modelAndView;
+		}
+		data = service.getUserList();
+		for (User user : data) {
+			System.out.println(user.getName());
 		}
 		modelAndView.setViewName("home");
 		return modelAndView;
@@ -146,5 +154,23 @@ public class HomeController {
 		System.out.println(flag);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/getMembers", method = RequestMethod.GET)
+	public @ResponseBody List<User> getUsers(@RequestParam String name) {
+		
+		System.out.println("hello i m inside getMembers");
+		List<User> result = new ArrayList<User>();
+		for (User user : data) {
+			if (user.getName().contains(name)) {
+				result.add(user);
+			}
+		}
+		for (User user : result) {
+			System.out.println(user.getName());
+		}
+		return result;
+		
+		
 	}
 }

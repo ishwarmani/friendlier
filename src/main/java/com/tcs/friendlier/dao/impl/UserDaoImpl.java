@@ -1,6 +1,7 @@
 package com.tcs.friendlier.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -110,6 +111,25 @@ public class UserDaoImpl implements IUserDao {
 			session.close();
 		}
 		return false;
+	}
+
+	@Override
+	public List<User> getUserList() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(User.class);
+			@SuppressWarnings("unchecked")
+			List<User> list = criteria.list();
+			transaction.commit();
+			return list;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
 	}
 
 }
