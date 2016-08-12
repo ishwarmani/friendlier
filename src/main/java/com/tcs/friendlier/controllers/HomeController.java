@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 import com.tcs.friendlier.service.IService;
 
@@ -49,6 +50,8 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/loginRegister");
 			return modelAndView;
 		}
+		List<Post> feed = service.getPostList();
+		modelAndView.addObject("feed",feed);
 		data = service.getUserList();
 		for (User user : data) {
 			System.out.println(user.getName());

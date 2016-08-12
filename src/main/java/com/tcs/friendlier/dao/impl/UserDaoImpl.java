@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,26 @@ public class UserDaoImpl implements IUserDao {
 			Criteria criteria = session.createCriteria(User.class);
 			@SuppressWarnings("unchecked")
 			List<User> list = criteria.list();
+			transaction.commit();
+			return list;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Post> getPostList() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(Post.class).addOrder(Order.desc("contentDate"));
+			criteria.setMaxResults(10);
+			@SuppressWarnings("unchecked")
+			List<Post> list = criteria.list();
 			transaction.commit();
 			return list;
 		}catch (Exception e) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.friendlier.dao.IUserDao;
+import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 import com.tcs.friendlier.service.IService;
 
@@ -46,6 +47,12 @@ public class ServiceImpl implements IService {
 	public List<User> getUserList() {
 		// TODO Auto-generated method stub
 		return userDao.getUserList();
+	}
+
+	@Override
+	public List<Post> getPostList() {
+		// TODO Auto-generated method stub
+		return userDao.getPostList();
 	}
 
 }

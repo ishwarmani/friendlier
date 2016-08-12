@@ -9,6 +9,9 @@
 
 <!-- jQuery -->
 	<script src="js/jquery-2.2.4.min.js"></script>
+<!-- jQuery auto complete -->
+	<script src="js/jquery.autocomplete.min.js"></script>
+	
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
 <!-- Previewing image before it gets upload -->
@@ -26,7 +29,7 @@
 <link rel="stylesheet" href="css/index.css" />
 
 <script>
-
+	
   	$(document).ready(function() {
 
   		$('#searchMembers').autocomplete({
@@ -34,14 +37,10 @@
   			paramName: "name",
   			delimiter: ",",
   		    transformResult: function(response) {
-  		    	
   		        return {
-  		        	
   		            suggestions: $.map($.parseJSON(response), function(item) {
-  		            	
-  		                return { value: item.name  +","
-  		                	 + item.id,
-  		                	data: item.email };
+  		                return { value: item.name,data: item.email };
+  		                	
   		            })
   		            
   		        };
@@ -113,11 +112,13 @@
                               <div class="modal-body">
                                  <h4>Your Profile</h4>
                                  <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
-                                  <div class="pull-left">
-                                    Newer Name :  <label> ${loggedInUser.name}</label><br/>
-                                    Role &nbsp;: <label> ${loggedInUser.getRole()}</label><br/>
-                                    Phone No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getPhone()}</label><br/>
-                                    Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <label> ${loggedInUser.getEmail()}</label><br/>
+                                  <div class="pull-left" style = "padding-left:10px;">
+                                    
+										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.loggedInUser.name}">name</strong><br />
+										Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getEmail()}"></span> <br />
+										Role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getRole()}"></span> <br />
+                                    	Phone No.&nbsp;&nbsp;:<span th:text="${session.loggedInUser.getPhone()}"></span> <br /> 
+                                    
                                  </div>  
                               </div>
                               <div class="modal-footer">
@@ -177,25 +178,32 @@
                </div>
                <div class="panel-body">
                   <div class="row" style="padding-top: 20px;">
-                    
-            
-            
-            <!-- <c:forEach  items="${recKarma}"  var="user">
+  <!--            <div th:each="post:${feed}">
+	              <div class="col-xs-12" >
+		              	<div class="col-xs-2 " style = "text-align: center;">
+		                   <img class="imager wallOfFamePost" src="/images/myimage.jpg"/>
+		                </div>
+		                <div class="col-xs-9 ">
+		                	<b th:text="${post.writerId}"></b> <br/>
+		              		<p th:text="${post.content}"></p>
+		              		<i th:text="${post.contentDate}"></i> 
+		                </div><hr> </hr>
+		              	
+	              	</div>
+              </div>		-->
+              <div  th:each="post:${feed}">
             <div class="col-xs-12" >
             			<div class="col-xs-2 " style = "text-align: center;">
-                        <img class="imager wallOfFamePost"
-                        src="/images/myimage.jpg"/>
-                        
-                     </div>
-			             <strong> ${user.getRecieverName()} </strong>has received ${user.getStar()} 
-			             
-			             from <strong> ${user.getSenderName()} </strong> for Karma ${user.getKarma()} <br/>
-			                           Reason : ${user.getMessage()} <br/> 
-			                           Date : <i>${user.getDate()}</i><hr>  
-            
+                        	<img class="imager wallOfFamePost" src="/images/myimage.jpg"/>
+                    	 </div>
+                    	 <div class="col-xs-10 ">
+			             <strong th:text="${post.writerId}" > </strong> <br/>
+			             <label th:text="${post.content}"></label><br/> 
+			             Date : <i th:text="${post.contentDate}"></i><hr>  </hr>
+            			</div>
             </div>
-            	
-            </c:forEach> -->
+            	<hr/>
+            </div>  
                      
                   </div>
                </div>
@@ -209,7 +217,7 @@
 	     <div class="panel-body">
               <form class="form-inline" role="form">
                   <div class="form-group">
-                      <input type="text" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
+                      <input type="text" name="name" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
                       <input type="button" value = "Search" class="btn btn-default" data-toggle="modal" data-target="#memberModal"/>
                   </div>
                </form>
