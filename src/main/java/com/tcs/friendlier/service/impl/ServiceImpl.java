@@ -36,6 +36,12 @@ public class ServiceImpl implements IService {
 		// TODO Auto-generated method stub
 		return userDao.findUserByEmail(email, password);
 	}
+	
+	@Override
+	public User findUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userDao.findUserByEmail(email);
+	}
 
 	@Override
 	public boolean updateStatus(int writerId, String content) {

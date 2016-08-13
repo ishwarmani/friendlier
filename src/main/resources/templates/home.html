@@ -30,7 +30,7 @@
   		    transformResult: function(response) {
   		        return {
   		            suggestions: $.map($.parseJSON(response), function(item) {
-  		                return { value: item.name+" ,  "
+  		                return { value: item.name+" ,   "
  		                	 + item.email,
  		                	 data: item.email };
   		                	
@@ -43,16 +43,22 @@
   		});
   		
   	});
- /*  	
+ 
+  	</script>
+  	
+  	<script type="text/javascript">
+  	
+  	  	
   	$(document).ready(function(){
-  	    $('#subButton').attr('disabled',true);
+  	    $('.subButton').attr('disabled',true);
   	    $('#searchMembers').keyup(function(){
   	        if($(this).val().length !=0)
-  	        	 $('#subButton').attr('disabled', false);            
+  	        	 $('.subButton').attr('disabled', false);            
   	        else
-  	        	 $('#subButton'.attr('disabled',true);
+  	        	 $('.subButton'.attr('disabled',true);
   	    })
-  	}); */
+  	}); 
+  	
   	</script>
 
 </head>
@@ -219,10 +225,10 @@
   	<!-- <input type="text" name="user" class="form-control" id="searchMembers1" placeholder="Select a newer"/> -->
   	<div class="row">
 	     <div class="panel-body">
-              <form class="form-inline" role="form">
+              <form class="form-inline" role="form" method="post" action="/findUser">
                   <div class="form-group">
                       <input type="text" name="name" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
-                      <input type="button" value = "Search" class="btn btn-default" data-toggle="modal" data-target="#memberModal"/>
+                      <input type="submit" value = "Search" class="btn btn-default subButton" data-toggle="modal" data-target="#memberModal"/>
                   </div>
                </form>
 	       </div>  	
@@ -239,10 +245,10 @@
           <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
           <div class="pull-left" style = "padding-left:10px;">
                                     
-										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.loggedInUser.name}">name</strong><br />
-										Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getEmail()}"></span> <br />
-										Role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getRole()}"></span> <br />
-                                    	Phone No.&nbsp;&nbsp;:<span th:text="${session.loggedInUser.getPhone()}"></span> <br /> 
+										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.sUser.name}">name</strong><br />
+										Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.sUser.getEmail()}"></span> <br />
+										Role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.sUser.getRole()}"></span> <br />
+                                    	Phone No.&nbsp;&nbsp;:<span th:text="${session.sUser.getPhone()}"></span> <br /> 
                                     
                                  </div>  
           

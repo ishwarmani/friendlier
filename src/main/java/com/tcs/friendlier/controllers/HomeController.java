@@ -28,6 +28,8 @@ public class HomeController {
 	
 	List<User> data = new ArrayList<User>();
 	
+	User sUser = null;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
@@ -53,13 +55,43 @@ public class HomeController {
 		List<Post> feed = service.getPostList();
 		modelAndView.addObject("feed",feed);
 		data = service.getUserList();
-		for (User user : data) {
-			System.out.println(user.getName());
+//		for (User user : data) {
+//			System.out.println(user.getName());
+//		}
+		if(sUser == null){
+			sUser = loggedInUser;
+			httpSession.setAttribute("sUser", loggedInUser);
+//			modelAndView.addObject("sUser", sUser);
 		}
+//		System.out.println("hello the sUser in get of home is " + sUser);
+//		System.out.println("loggedInUser is " + loggedInUser);
 		modelAndView.setViewName("home");
 		return modelAndView;
 	}
-
+	
+	@RequestMapping(value = "/findUser", method = RequestMethod.POST)
+	public ModelAndView findUser(@RequestParam("name") String name,HttpSession httpSession) {
+		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (loggedInUser == null) {
+			modelAndView.addObject("user", new User());
+			modelAndView.setViewName("redirect:/loginRegister");
+			return modelAndView;
+		}
+	//	String selectedName = name.split(",")[0];
+		String selectedEmail = name.split(",   ")[1];
+		System.out.println("hey this the selected email");
+		System.out.println(selectedEmail);
+		sUser = service.findUserByEmail(selectedEmail);
+		httpSession.setAttribute("sUser", sUser);
+		
+		System.out.println("session "+httpSession.getAttribute("sUser"));
+		System.out.println("sUser normal "+ sUser);
+//		modelAndView.addObject("sUser", sUser);
+//		System.out.println("sUser of findUser post "+ sUser.getName() + " " + sUser.getId());
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+	}
 	@RequestMapping(value = { "/loginRegister", "/login", "register" }, method = RequestMethod.GET)
 	public ModelAndView register(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
@@ -116,8 +148,8 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/home");
 			return modelAndView;
 		}
-		System.out.println("dummy: " + dummy);
-		System.out.println(email_id + "/////" + password);
+//		System.out.println("dummy: " + dummy);
+//		System.out.println(email_id + "/////" + password);
 		try {
 			int id = Integer.parseInt(email_id);
 			user = service.findUserById(id, password);
@@ -151,10 +183,10 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
-		System.out.println(content);
+	//	System.out.println(content);
 		int writerId = user.getId();
 		boolean flag = service.updateStatus(writerId, content);
-		System.out.println(flag);
+	//	System.out.println(flag);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
 	}
@@ -162,16 +194,16 @@ public class HomeController {
 	@RequestMapping(value = "/getMembers", method = RequestMethod.GET)
 	public @ResponseBody List<User> getUsers(@RequestParam String name) {
 		
-		System.out.println("hello i m inside getMembers");
+	//	System.out.println("hello i m inside getMembers");
 		List<User> result = new ArrayList<User>();
 		for (User user : data) {
 			if (user.getName().contains(name)) {
 				result.add(user);
 			}
 		}
-		for (User user : result) {
+		/*for (User user : result) {
 			System.out.println(user.getName());
-		}
+		}*/
 		return result;
 		
 		

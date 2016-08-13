@@ -13,6 +13,8 @@ public interface IUserDao {
 
 	public User findUserByEmail(String email, String password);
 	
+	public User findUserByEmail(String email);
+	
 	public boolean updateStatus(int writerId,String content);
 
 	public List<User> getUserList();

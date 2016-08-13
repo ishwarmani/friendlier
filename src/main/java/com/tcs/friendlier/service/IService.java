@@ -10,8 +10,15 @@ public interface IService {
 	public int save(User user);
 
 	public User findUserById(int id, String password);
-
+	/*
+	 * for login authentication
+	 */
 	public User findUserByEmail(String email, String password);
+	
+	/*
+	 * for searching a user
+	 */
+	public User findUserByEmail(String email);
 	
 	public boolean updateStatus(int writerId,String content);
 

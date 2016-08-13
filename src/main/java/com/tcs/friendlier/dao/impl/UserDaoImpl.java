@@ -92,7 +92,27 @@ public class UserDaoImpl implements IUserDao {
 		}
 		return null;
 	}
-
+	
+	@Override
+	public User findUserByEmail(String email) {
+		User user = null;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("email", email));
+			user = (User) criteria.uniqueResult();
+			transaction.commit();
+			return  user;
+		} catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public boolean updateStatus(int writerId, String content) {
 		Session session = sessionFactory.openSession();
