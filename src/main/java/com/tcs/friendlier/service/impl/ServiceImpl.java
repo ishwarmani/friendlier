@@ -139,6 +139,7 @@ public class ServiceImpl implements IService {
 			messagesCopy.setSendersName(userDao.findUserById(messages.getSenderId()).getName());
 			messagesCopy.setMessage(messages.getMessage());
 			messagesCopy.setMsgDate(messages.getMsgDate());
+			messagesCopy.setSenderId(messages.getSenderId());
 			
 			msgsCopy.add(messagesCopy);
 		}

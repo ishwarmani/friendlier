@@ -5,6 +5,7 @@ import java.util.Date;
 public class MessagesCopy {
 
 	private int sNo;
+	private int senderId;
 	private String sendersName;
 	private String message;
 	private Date msgDate;
@@ -39,6 +40,14 @@ public class MessagesCopy {
 
 	public void setMsgDate(Date msgDate) {
 		this.msgDate = msgDate;
+	}
+
+	public int getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(int senderId) {
+		this.senderId = senderId;
 	}
 
 }
