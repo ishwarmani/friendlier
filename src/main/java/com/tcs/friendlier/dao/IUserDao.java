@@ -2,6 +2,7 @@ package com.tcs.friendlier.dao;
 
 import java.util.List;
 
+import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 
@@ -30,4 +31,8 @@ public interface IUserDao {
 	public List<User> getFriendRequests(int id);
 
 	public List<User> getFriends(int id);
+
+	public void updateMessages(Messages msg);
+
+	public List<Messages> getAllMessages(int id);
 }

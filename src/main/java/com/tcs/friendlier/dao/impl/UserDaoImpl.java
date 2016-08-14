@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tcs.friendlier.dao.IUserDao;
 import com.tcs.friendlier.pojo.FriendList;
+import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.Status;
 import com.tcs.friendlier.pojo.User;
@@ -308,7 +309,10 @@ public class UserDaoImpl implements IUserDao {
 			int temp = 0;
 			List<User> listUser = new ArrayList<>();
 			for (FriendList friendList : list) {
-				temp = friendList.getUserId1();
+				if(friendList.getUserId1() == id)
+					temp = friendList.getUserId2();
+				else
+					temp = friendList.getUserId1();
 				listUser.add(findUserById(temp));
 			}
 			transaction.commit();
@@ -341,5 +345,41 @@ public class UserDaoImpl implements IUserDao {
 		return null;
 	}
 
+	@Override
+	public void updateMessages(Messages msg) {
+		msg.setMsgDate(new Date());
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(msg);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<Messages> getAllMessages(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(Messages.class).add(Restrictions.eq("recieverId", id)).
+					addOrder(Order.desc("msgDate"));
+			criteria.setMaxResults(10);
+			@SuppressWarnings("unchecked")
+			List<Messages> list = criteria.list();
+			transaction.commit();
+			return list;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+		}
 
 }

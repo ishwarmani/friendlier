@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 import com.tcs.friendlier.service.IService;
@@ -260,6 +261,42 @@ public class HomeController {
 		int friendId = friend.getId();
 		service.declineRequest(senderId,friendId);
 		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+		}
+	
+	@RequestMapping(value="/sendMessage/{id}",method=RequestMethod.POST)
+	public ModelAndView sendMessage(@PathVariable String id,@RequestParam("message") String message,  HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("value in pathVarible is " + id);
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		int recieverId = Integer.parseInt(id);
+		Messages msg = new Messages();
+		msg.setRecieverId(recieverId);
+		msg.setMessage(message);
+		msg.setSenderId(user.getId());
+		service.updateMessages(msg);
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/messages",method=RequestMethod.GET)
+	public ModelAndView showMessages(HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		
+		List<Messages> msgs = service.getAllMessages(user.getId());
+		modelAndView.addObject("msgs",msgs);
+		modelAndView.setViewName("messages");
 		return modelAndView;
 		}
 }
