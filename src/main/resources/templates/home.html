@@ -187,13 +187,13 @@
                </div>
                <div class="panel-body">
                   <div class="row" style="padding-top: 20px;">
-		              <div  th:each="post:${feed}">
+		              <div  th:each="post:${feeder}">
 			            <div class="col-xs-12" >
 			            	<div class="col-xs-2 " style = "text-align: center;">
 			                   <img class="imager wallOfFamePost img-rounded" src="/images/myimage.jpg"/>
 			                </div>
 			                <div class="col-xs-10 ">
-						       <strong th:text="${post.writerId}" > </strong> <br/>
+						       <strong th:text="${post.writerName}" > </strong> <br/>
 						       <label th:text="${post.content}"></label><br/> 
 						       Date : <i th:text="${post.contentDate}"></i><hr>  </hr>
 			            	</div>

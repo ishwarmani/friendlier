@@ -326,7 +326,8 @@ public class UserDaoImpl implements IUserDao {
 		return null;
 	}
 	
-	private User findUserById(int id) {
+	@Override
+	public User findUserById(int id) {
 		User user = null;
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();

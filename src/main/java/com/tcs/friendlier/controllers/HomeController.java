@@ -21,6 +21,8 @@ import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
 import com.tcs.friendlier.service.IService;
+import com.tcs.friendlier.util.MessagesCopy;
+import com.tcs.friendlier.util.PostCopy;
 
 @Controller
 public class HomeController {
@@ -54,15 +56,15 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/loginRegister");
 			return modelAndView;
 		}
-		List<Post> feed = service.getPostList();
-	//	List<PostCopy> feed2 = service.getPostList();
+//		List<Post> feed = service.getPostList();
+		List<PostCopy> feeder = service.getPostCopyList();
 		List<User> friendRequests = service.getFriendRequests(loggedInUser.getId());
 		List<User> friends = service.getFriends(loggedInUser.getId());
 		for (User user : friendRequests) {
 			System.out.println(user.getName());
 		}
 		
-		modelAndView.addObject("feed",feed);
+		modelAndView.addObject("feeder",feeder);
 		modelAndView.addObject("friendRequests",friendRequests);
 		modelAndView.addObject("friends",friends);
 		data = service.getUserList();
@@ -302,8 +304,9 @@ public class HomeController {
 			return modelAndView;
 		}
 		
-		List<Messages> msgs = service.getAllMessages(user.getId());
-		modelAndView.addObject("msgs",msgs);
+	//	List<Messages> msgs = service.getAllMessages(user.getId());
+		List<MessagesCopy> msgsCopy = service.getAllMessagesCopy(user.getId());
+		modelAndView.addObject("msgsCopy",msgsCopy);
 		modelAndView.setViewName("messages");
 		return modelAndView;
 		}

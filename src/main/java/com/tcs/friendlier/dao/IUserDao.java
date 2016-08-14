@@ -11,6 +11,8 @@ public interface IUserDao {
 	public int save(User user);
 
 	public User findUserById(int id, String password);
+	
+	public User findUserById(int id);
 
 	public User findUserByEmail(String email, String password);
 	

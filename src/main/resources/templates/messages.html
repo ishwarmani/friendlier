@@ -155,11 +155,11 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			      <tr th:each="msg : ${msgs}">
-			        <td th:text="${msg.getId()}"></td>
-			        <td th:text="${msg.senderId}"></td>
-			        <td th:text="${msg.message}"></td>
-			        <td th:text="${msg.msgDate}"></td>
+			      <tr th:each="msg : ${msgsCopy}">
+			        <td th:text="${msg.getsNo()}"></td>
+			        <td th:text="${msg.getSendersName()}"></td>
+			        <td th:text="${msg.getMessage()}"></td>
+			        <td th:text="${msg.getMsgDate()}"></td>
 			      </tr>
 			    </tbody>
 			  </table>
