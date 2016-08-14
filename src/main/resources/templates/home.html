@@ -199,19 +199,19 @@
 		              	
 	              	</div>
               </div>		-->
-              <div  th:each="post:${feed}">
-            <div class="col-xs-12" >
-            			<div class="col-xs-2 " style = "text-align: center;">
-                        	<img class="imager wallOfFamePost" src="/images/myimage.jpg"/>
-                    	 </div>
-                    	 <div class="col-xs-10 ">
-			             <strong th:text="${post.writerId}" > </strong> <br/>
-			             <label th:text="${post.content}"></label><br/> 
-			             Date : <i th:text="${post.contentDate}"></i><hr>  </hr>
-            			</div>
-            </div>
-            	<hr/>
-            </div>  
+		              <div  th:each="post:${feed}">
+			            <div class="col-xs-12" >
+			            	<div class="col-xs-2 " style = "text-align: center;">
+			                   <img class="imager wallOfFamePost" src="/images/myimage.jpg"/>
+			                </div>
+			                <div class="col-xs-10 ">
+						       <strong th:text="${post.writerId}" > </strong> <br/>
+						       <label th:text="${post.content}"></label><br/> 
+						       Date : <i th:text="${post.contentDate}"></i><hr>  </hr>
+			            	</div>
+			            </div>
+		            	<hr/>
+		            </div>  
                      
                   </div>
                </div>
@@ -254,9 +254,9 @@
           
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-info pull-left">View Profile</button>
-        <button type="button" class="btn btn-success pull-left">Add Friend</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+       		<a href="user"><button type="button" class="btn btn-info pull-left">View Profile</button></a>
+    		<a href="addFriend"><button type="button" class="btn btn-success pull-left" >Add Friend</button> </a> 
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
       
@@ -305,7 +305,46 @@
 	 		</div>
  		</div>
  	</div>
- 	<!-- newer's list will be displayed here -->
+ 	<!-- Requests list will be displayed here -->
+ 	
+ 	<div class="row">
+ 		<div class="panel panel-default">
+ 			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >
+                <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<font color="white">Friends(<span th:text="${session.loggedInUser.getFriendCount()}"></span>)</font>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+            	
+              <div  th:each="frnds:${friends}">
+            	<div class = "panel-body">
+            		<div class="col-xs-5">
+						<div class="row">
+							<img class="sideBatchPic" src="images/myimage.jpg"/>
+						</div>		
+					</div>
+					<div class="col-xs-7">
+						<div class="row" style="padding-bottom:5px">
+							<a href="#">&nbsp;&nbsp;<strong th:text="${frnds.name}" > </strong></a><br/>
+						</div>
+						<div class="row">
+							<form >
+							<div style="padding-bottom:5px">
+								<a href="#"> <!-- th:href = "@{/acceptRequest/} + ${fReq.id}" --><button type="button" class="btn btn-success btn-sm">Message</button></a>
+							
+        					<a href ="user"><button type="button" class="btn btn-info btn-sm" >View Profile</button></a>
+        					</div>
+        					</form>
+						</div>
+					</div>
+            	</div>
+            </div>	
+ 
+            </div>
+	 		</div>
+ 		</div>
+
+ 	</div>
  	<div class="row">
  		<div class="panel panel-default">
  			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >
@@ -315,47 +354,30 @@
             <div class="panel-body">
             <div class="row">
             	
-				<!-- <c:forEach  items="${newerBoard}"  var="user"> 	
-              		<div class = "col-xs-5">
-              		image of newer in this box
-              		<img class="sideBatchPic profile-pic"
-                        src="images/myimage.jpg"/>
-                        
-              		</div>
-                  <div class= "col-xs-7">
-                     <div class="row">
-                        <div class="row" style="height:30px">
-                        </div>
-                        <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${user.getName()}</a><br/>
-                     </div>
-                     <div class="row">
-                        <span>
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="gold badge" src="/images/icon_gold_badge.png"/>
-                           
-                        </span>
-                        <span>
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="silver badge" src="/images/icon_silver_badge.png"/>
-                           
-                        </span>
-                        <span>
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="bronze badge" src="/images/icon_broze_badge.png"/>
-                           
-                        </span>
-                     </div>
-                    
-                     <div class="row">
-                        <span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getGold() }</i>
-                        </span>
-                        <span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getSilver() }</i>
-                        </span>
-                        <span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>${user.getBadges().getBronze() }</i>
-                        </span>
-                     </div>
-                  </div>
-                  close      </c:forEach> -->
+              <div  th:each="fReq:${friendRequests}">
+            	<div class = "panel-body">
+            		<div class="col-xs-5">
+						<div class="row">
+							<img class="sideBatchPic" src="images/myimage.jpg"/>
+						</div>		
+					</div>
+					<div class="col-xs-7">
+						<div class="row" style="padding-bottom:5px">
+							<a href="#">&nbsp;&nbsp;<strong th:text="${fReq.name}" > </strong></a><br/>
+						</div>
+						<div class="row">
+							<form >
+							<div style="padding-bottom:5px">
+								<a th:href = "@{/acceptRequest/} + ${fReq.id}"><button type="button" class="btn btn-success btn-xs">Accept Request</button></a>
+    							<a href = "decline"><button type="button" class="btn btn-danger btn-xs" >Decline</button></a>
+							</div>
+        					<a href ="user"><button type="button" class="btn btn-info " >View Profile</button></a>
+        					</form>
+						</div>
+					</div>
+            	</div>
+            </div>	
+ 
             </div>
 	 		</div>
  		</div>

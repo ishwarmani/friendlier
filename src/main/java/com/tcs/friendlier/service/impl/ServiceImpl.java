@@ -61,4 +61,34 @@ public class ServiceImpl implements IService {
 		return userDao.getPostList();
 	}
 
+	@Override
+	public void sendRequest(int senderId, int recieverId) {
+		// TODO Auto-generated method stub
+		userDao.sendRequest(senderId,recieverId);
+	}
+
+	@Override
+	public void updateRequest(int senderId, int friendId) {
+		// TODO Auto-generated method stub
+		userDao.updateRequest(senderId,friendId);
+	}
+
+	@Override
+	public void declineRequest(int senderId, int friendId) {
+		// TODO Auto-generated method stub
+		userDao.declineRequest(senderId,friendId);
+	}
+
+	@Override
+	public List<User> getFriendRequests(int id) {
+		// TODO Auto-generated method stub
+		return userDao.getFriendRequests(id);
+	}
+
+	@Override
+	public List<User> getFriends(int id) {
+		// TODO Auto-generated method stub
+		return userDao.getFriends(id);
+	}
+
 }

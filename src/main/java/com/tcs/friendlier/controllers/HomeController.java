@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,18 +54,20 @@ public class HomeController {
 			return modelAndView;
 		}
 		List<Post> feed = service.getPostList();
+		List<User> friendRequests = service.getFriendRequests(loggedInUser.getId());
+		List<User> friends = service.getFriends(loggedInUser.getId());
+		for (User user : friendRequests) {
+			System.out.println(user.getName());
+		}
+		
 		modelAndView.addObject("feed",feed);
+		modelAndView.addObject("friendRequests",friendRequests);
+		modelAndView.addObject("friends",friends);
 		data = service.getUserList();
-//		for (User user : data) {
-//			System.out.println(user.getName());
-//		}
 		if(sUser == null){
 			sUser = loggedInUser;
 			httpSession.setAttribute("sUser", loggedInUser);
-//			modelAndView.addObject("sUser", sUser);
 		}
-//		System.out.println("hello the sUser in get of home is " + sUser);
-//		System.out.println("loggedInUser is " + loggedInUser);
 		modelAndView.setViewName("home");
 		return modelAndView;
 	}
@@ -206,6 +209,57 @@ public class HomeController {
 		}*/
 		return result;
 		
+	}
+	
+	@RequestMapping(value="/addFriend",method=RequestMethod.GET)
+	public ModelAndView addFriend(HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		System.out.println("i m inside addFriend");
+		int senderId = ((User)httpSession.getAttribute("loggedInUser")).getId();
+		int recieverId = ((User)httpSession.getAttribute("sUser")).getId();
+		service.sendRequest(senderId,recieverId);
+		
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
 		
 	}
+	
+	@RequestMapping(value="/acceptRequest/{id}",method=RequestMethod.GET)
+	public ModelAndView acceptRequest(@PathVariable String id, HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("value in pathVarible is " + id);
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		int friendId = ((User)httpSession.getAttribute("loggedInUser")).getId();
+		int senderId = Integer.parseInt(id);
+		service.updateRequest(senderId,friendId);
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+		}
+	
+	@RequestMapping(value="/decline",method=RequestMethod.GET)
+	public ModelAndView decline(User friend, HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		int senderId = ((User)httpSession.getAttribute("loggedInUser")).getId();
+		int friendId = friend.getId();
+		service.declineRequest(senderId,friendId);
+		modelAndView.setViewName("redirect:/home");
+		return modelAndView;
+		}
 }

@@ -20,4 +20,14 @@ public interface IUserDao {
 	public List<User> getUserList();
 
 	public List<Post> getPostList();
+
+	public void sendRequest(int senderId, int recieverId);
+	
+	public void updateRequest(int senderId, int friendId);
+	
+	public void declineRequest(int senderId, int friendId);
+
+	public List<User> getFriendRequests(int id);
+
+	public List<User> getFriends(int id);
 }
