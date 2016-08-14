@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>index</title>
+
+<!-- jQuery -->
+	<script src="js/jquery-2.2.4.min.js"></script>
+<!-- jQuery auto complete -->
+	<script src="js/jquery.autocomplete.min.js"></script>
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+
+	<link rel="stylesheet" href="css/index.css" />
+
+<script>
+	
+  	$(document).ready(function() {
+  		$('#searchMembers').autocomplete({
+  			serviceUrl:'/getMembers',
+  			paramName: "name",
+  			delimiter: ",",
+  		    transformResult: function(response) {
+  		        return {
+  		            suggestions: $.map($.parseJSON(response), function(item) {
+  		                return { value: item.name+" ,   "
+ 		                	 + item.email,
+ 		                	 data: item.email };
+  		                	
+  		            })
+  		            
+  		        };
+  		        
+  		    }
+  		    
+  		});
+  		
+  	});
+ 
+  	</script>
+  	
+  	<script type="text/javascript">
+  	
+  	  	
+  	$(document).ready(function(){
+  	    $('.subButton').attr('disabled',true);
+  	    $('#searchMembers').keyup(function(){
+  	        if($(this).val().length !=0)
+  	        	 $('.subButton').attr('disabled', false);            
+  	        else
+  	        	 $('.subButton'.attr('disabled',true);
+  	    })
+  	}); 
+  	
+  	</script>
+
+</head>
+   <body style="background-color:#f6fbff">
+    
+      <div class="row no-gutter">
+         <nav class="navbar navbar-default" role="navigation" style="background: #45bfbb;">
+            <div class="navbar-header" >
+              <a href="/"><img src="images/friendlier.png" style="height: 50px; margin-left: 40px; margin-top: 15px;" /> </a> 
+              <img src="images/sociable.png" style="height: 35px; margin-top: 35px;" />
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNav" aria-expanded="false">
+               		<span class="sr-only">Toggle navigation</span>
+               		<span class="icon-bar"></span>
+               		<span class="icon-bar"></span>
+               </button>
+           	</div>
+            <div class="collapse navbar-collapse pull-right" id="myNav">
+               <ul class="nav navbar-nav">
+                  <li class="buttons">
+                     <a href="/home">
+                        <i class="fa fa-tachometer fa-lg" aria-hidden="true"></i>
+                        <!-- <img src="assets/icon_dashboard_hover.png" class="hover"> -->
+                        <b>Home</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover2">
+                     <a href="badge">
+                     <span class="fa-stack">
+                     <i class="fa fa-circle fa-stack-2x"></i>
+                     <i class="fa fa-star-o fa-stack-1x fa-inverse"></i>
+                     </span>
+                     <b>Profile</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover3">
+                     <a href="#">
+                        <i class="fa fa-wpforms fa-lg" aria-hidden="true"></i>
+                        <b>Friends</b>
+                     </a>
+                  </li>
+                  <li class="buttons">
+                     <a href="messages">
+                        <span class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <b>Messages</b>
+                     </a>
+                  </li>
+               </ul>
+               <!-- code for user profile button and dropdwon -->
+                  <div class = "dropdown pull-right">
+                 	 <a class = "btn dropdown-toggle" id = "dLabel" data-toggle="modal" href="#myModal" data-direction='top-right'>
+                        <img class="userInfoIcon img-rounded" src="images/myimage.jpg"/>
+                     </a>
+                     <div class="modal right fade modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-body">
+                                 <h4>Your Profile</h4>
+                                 <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
+                                  <div class="pull-left" style = "padding-left:10px;">
+                                    
+										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.loggedInUser.name}">name</strong><br />
+										Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getEmail()}"></span> <br />
+										Role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getRole()}"></span> <br />
+                                    	Phone No.&nbsp;&nbsp;:<span th:text="${session.loggedInUser.getPhone()}"></span> <br /> 
+                                    
+                                 </div>  
+                              </div>
+                              <div class="modal-footer">
+                                 <a class=" btn pull-right" href="/logout">Logout</a>
+                              </div>
+                           </div>
+                           <!-- modal-content -->
+                        </div>
+                        <!--modal-dialog -->
+                     </div>
+                     <!-- modal -->
+                  </div>
+            </div>
+         </nav>
+      </div>
+           <div class="container">
+      		<!-- <div class="table-responsive"> -->
+			  <table class="table table-bordered table-striped table-hover">
+			    <thead>
+			      <tr>
+			        <th>#</th>
+			        <th>Sender</th>
+			        <th>Message</th>
+			        <th>Time</th>
+			        			        
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr th:each="msg : ${msgs}">
+			        <td th:text="${msg.getId()}"></td>
+			        <td th:text="${msg.senderId}"></td>
+			        <td th:text="${msg.message}"></td>
+			        <td th:text="${msg.msgDate}"></td>
+			      </tr>
+			    </tbody>
+			  </table>
+			<!-- </div> -->
+	  </div>
+
+</body>
+</html>

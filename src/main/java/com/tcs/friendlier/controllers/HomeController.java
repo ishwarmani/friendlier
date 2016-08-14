@@ -55,6 +55,7 @@ public class HomeController {
 			return modelAndView;
 		}
 		List<Post> feed = service.getPostList();
+	//	List<PostCopy> feed2 = service.getPostList();
 		List<User> friendRequests = service.getFriendRequests(loggedInUser.getId());
 		List<User> friends = service.getFriends(loggedInUser.getId());
 		for (User user : friendRequests) {
@@ -128,7 +129,10 @@ public class HomeController {
 		int success = service.save(user);
 		if (success == 1) {
 			httpSession.setAttribute("loggedInUser", user);
-
+			if(sUser == null){
+				sUser = loggedInUser;
+				httpSession.setAttribute("sUser", loggedInUser);
+			}
 			modelAndView.setViewName("redirect:/home");
 			return modelAndView;
 		} else {
@@ -167,6 +171,10 @@ public class HomeController {
 			return modelAndView;
 		}
 		httpSession.setAttribute("loggedInUser", user);
+		if(sUser == null){
+			sUser = user;
+			httpSession.setAttribute("sUser", user);
+		}
 		System.out.println(user.getName());
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
