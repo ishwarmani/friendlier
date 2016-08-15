@@ -80,6 +80,7 @@ public class HomeController {
 	public ModelAndView findUser(@RequestParam("name") String name,HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
 		if (loggedInUser == null) {
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("redirect:/loginRegister");
@@ -305,9 +306,67 @@ public class HomeController {
 		}
 		
 	//	List<Messages> msgs = service.getAllMessages(user.getId());
-		List<MessagesCopy> msgsCopy = service.getAllMessagesCopy(user.getId());
+		List<MessagesCopy> msgsCopy = service.getReceivedMessagesCopy(user.getId());
 		modelAndView.addObject("msgsCopy",msgsCopy);
 		modelAndView.setViewName("messages");
 		return modelAndView;
 		}
+	
+	@RequestMapping(value="/sentMessages",method=RequestMethod.GET)
+	public ModelAndView showSentMessages(HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		
+	//	List<Messages> msgs = service.getAllMessages(user.getId());
+		List<MessagesCopy> msgsCopy = service.getSentMessagesCopy(user.getId());
+		modelAndView.addObject("msgsCopy",msgsCopy);
+		modelAndView.setViewName("messages");
+		return modelAndView;
+		}
+	
+	@RequestMapping(value="/conversation/{id}",method=RequestMethod.GET)
+	public ModelAndView getChat(@PathVariable String id,  HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("value in pathVarible is " + id);
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		int receiverId = Integer.parseInt(id);
+		int senderId = user.getId();
+		List<MessagesCopy> chatCopy = service.getChat(senderId,receiverId);
+		for (MessagesCopy messagesCopy : chatCopy) {
+			System.out.println(messagesCopy.getMessage() + " on date : " + messagesCopy.getMsgDate() + " by " + messagesCopy.getSendersName());
+		}
+		modelAndView.addObject("msgsCopy",chatCopy);
+		modelAndView.setViewName("messages");
+		return modelAndView;
+	}
+	
+
+	@RequestMapping(value="/conversations",method=RequestMethod.GET)
+	public ModelAndView getAllConversations(HttpSession httpSession){
+		User user = (User) httpSession.getAttribute("loggedInUser");
+		ModelAndView modelAndView = new ModelAndView();
+		if (user == null) {
+			modelAndView.addObject("msg", "login is required");
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+		
+	//	List<Messages> msgs = service.getAllMessages(user.getId());
+		List<MessagesCopy> msgsCopy = service.getAllConversations(user.getId());
+		
+		modelAndView.addObject("msgsCopy",msgsCopy);
+		modelAndView.setViewName("messages");
+		return modelAndView;
+		}
+	
 }

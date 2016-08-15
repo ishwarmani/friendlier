@@ -8,17 +8,17 @@
 <title>index</title>
 
 <!-- jQuery -->
-	<script th:src="@{/js/jquery-2.2.4.min.js}"></script>
+	<script src="js/jquery-2.2.4.min.js"></script>
 <!-- jQuery auto complete -->
-	<script th:src="@{/js/jquery.autocomplete.min.js}"></script>
+	<script src="js/jquery.autocomplete.min.js"></script>
 	
 	<!-- Latest compiled and minified JavaScript -->
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
 
-	<link rel="stylesheet" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" href="css/index.css" />
 
 <script>
 	
@@ -67,8 +67,8 @@
       <div class="row no-gutter">
          <nav class="navbar navbar-default" role="navigation" style="background: #45bfbb;">
             <div class="navbar-header" >
-              <a href="/"><img src="/images/friendlier.png" style="height: 50px; margin-left: 40px; margin-top: 15px;" /> </a> 
-              <img src="/images/sociable.png" style="height: 35px; margin-top: 35px;" />
+              <a href="/"><img src="images/friendlier.png" style="height: 50px; margin-left: 40px; margin-top: 15px;" /> </a> 
+              <img src="images/sociable.png" style="height: 35px; margin-top: 35px;" />
                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNav" aria-expanded="false">
                		<span class="sr-only">Toggle navigation</span>
                		<span class="icon-bar"></span>
@@ -112,14 +112,14 @@
                <!-- code for user profile button and dropdwon -->
                   <div class = "dropdown pull-right">
                  	 <a class = "btn dropdown-toggle" id = "dLabel" data-toggle="modal" href="#myModal" data-direction='top-right'>
-                        <img class="userInfoIcon img-rounded" src="/images/myimage.jpg"/>
+                        <img class="userInfoIcon img-rounded" src="images/myimage.jpg"/>
                      </a>
                      <div class="modal right fade modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                         <div class="modal-dialog">
                            <div class="modal-content">
                               <div class="modal-body">
                                  <h4>Your Profile</h4>
-                                 <img class="userInfoPic pull-left" src="/images/myimage.jpg"/>
+                                 <img class="userInfoPic pull-left" src="images/myimage.jpg"/>
                                   <div class="pull-left" style = "padding-left:10px;">
                                     
 										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.loggedInUser.name}">name</strong><br />
@@ -167,11 +167,8 @@
 			        <td th:text="${msg.getSendersName()}"></td>
 			        <td th:text="${msg.getMessage()}"></td>
 			        <td th:text="${msg.getMsgDate()}"></td>
-			        <td>
-			        	<button class="btn btn-success" data-toggle="modal" data-target="#messageModal">Reply</button>
-				      	<a th:href="@{/conversation/} + ${msg.getSenderId()}"><button type = "submit" class="btn btn-info" >View Chat</button></a>
-			      	</td>
-			          <div class="modal fade" id="messageModal" role="dialog" data-keyboard="false" data-backdrop="static">
+			        <td><a href = "conversations"> <button class="btn btn-info" >View Chat</button></a></td>
+			   		<!--  <div class="modal fade" id="messageModal" role="dialog" data-keyboard="false" data-backdrop="static">
        					<div class="modal-dialog">
     
      						 Modal content
@@ -186,14 +183,14 @@
 										<textarea  rows="4" class="form-control" name ="message" style="background: #a0a9af;"></textarea> 
 	        					   	</div>
 							        <div class="modal-footer">
-							       		<button type="submit" class="btn btn-info pull-left">Send Message</button>
+							       		<a href="user"><button type="submit" class="btn btn-info pull-left">Send Message</button></a>
 							        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 							        </div>
 						        </form>
       					   </div>
       
 				    </div>
-				  </div> 
+				  </div> -->
 			        
 			      </tr>
 			      

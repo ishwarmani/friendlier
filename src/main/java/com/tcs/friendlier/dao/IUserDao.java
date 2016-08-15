@@ -36,5 +36,9 @@ public interface IUserDao {
 
 	public void updateMessages(Messages msg);
 
-	public List<Messages> getAllMessages(int id);
+	public List<Messages> getReceivedMessages(int id);
+
+	public List<Messages> getSentMessages(int id);
+	
+	public List<Messages> getChat(int senderId,int receiverId);
 }

@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -363,7 +364,7 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public List<Messages> getAllMessages(int id) {
+	public List<Messages> getReceivedMessages(int id) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -382,5 +383,60 @@ public class UserDaoImpl implements IUserDao {
 		}
 		return null;
 		}
+
+	@Override
+	public List<Messages> getSentMessages(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(Messages.class).add(Restrictions.eq("senderId", id)).
+					addOrder(Order.desc("msgDate"));
+			criteria.setMaxResults(10);
+			@SuppressWarnings("unchecked")
+			List<Messages> list = criteria.list();
+			transaction.commit();
+			return list;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Messages> getChat(int senderId,int receiverId) {
+		System.out.println("ids are " + senderId + "  " + receiverId);
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			
+			Conjunction sendConjunction = Restrictions.conjunction();
+			sendConjunction.add(Restrictions.eq("senderId", senderId));
+			sendConjunction.add(Restrictions.eq("recieverId", receiverId));
+			
+			Conjunction recConjunction = Restrictions.conjunction();
+			recConjunction.add(Restrictions.eq("senderId", receiverId));
+			recConjunction.add(Restrictions.eq("recieverId", senderId));
+			
+			Criteria criteria = session.createCriteria(Messages.class)
+					.add(Restrictions.disjunction()
+							.add(sendConjunction)
+							.add(recConjunction)
+					).addOrder(Order.desc("msgDate"));
+			criteria.setMaxResults(10);
+			@SuppressWarnings("unchecked")
+			List<Messages> list = criteria.list();
+			transaction.commit();
+			return list;
+		}catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}
 
 }

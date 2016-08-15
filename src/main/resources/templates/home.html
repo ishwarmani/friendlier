@@ -8,21 +8,35 @@
 <title>index</title>
 
 <!-- jQuery -->
-	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="/js/jquery-2.2.4.min.js"></script>
 <!-- jQuery auto complete -->
-	<script src="js/jquery.autocomplete.min.js"></script>
+	<script src="/js/jquery.autocomplete.min.js"></script>
 	
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
 
 <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 
-	<link rel="stylesheet" href="css/index.css" />
+	<link rel="stylesheet" href="/css/index.css" />
 
 <script>
 	
   	$(document).ready(function() {
+  		
+  	//	$("#myBtn").click(function() {
+  		//	alert("akjfhkajhfjk");
+  		//	$("#myForm").submit();
+  	//		$("#memberModal").modal("show");
+  		    /* $("#myForm").submit(function() {
+  		    		alert("submitted");
+  		  			}); */
+  	//	});
+  	//	$("#myForm").bind('ajax:complete',function(){
+  	//		$("#memberModal").modal("show");
+  	//		});
+  	
+  	
   		$('#searchMembers').autocomplete({
   			serviceUrl:'/getMembers',
   			paramName: "name",
@@ -47,20 +61,19 @@
   	</script>
   	
   	<script type="text/javascript">
-  	
-  	  	
-  	$(document).ready(function(){
+    	
+  	/* $(document).ready(function(){
   	    $('.subButton').attr('disabled',true);
   	    $('#searchMembers').keyup(function(){
   	        if($(this).val().length !=0)
   	        	 $('.subButton').attr('disabled', false);            
   	        else
-  	        	 $('.subButton'.attr('disabled',true);
+  	        	 $('.subButton').attr('disabled',true);
   	    })
-  	}); 
+  	});  */
   	
   	</script>
-
+	
 </head>
    <body style="background-color:#f6fbff">
   
@@ -207,16 +220,18 @@
             <!-- end wall of fame -->
          </div>
       </div>
+  		<script>
   		
+  		</script>
   	<div class="col-lg-3 col-sm-5 col-md-5 ">
   	
   	<!-- <input type="text" name="user" class="form-control" id="searchMembers1" placeholder="Select a newer"/> -->
   	<div class="row">
 	     <div class="panel-body">
-              <form class="form-inline" role="form" method="post" action="/findUser">
+              <form id="myForm" class="form-inline" method="post" action="/findUser">
                   <div class="form-group">
                       <input type="text" name="name" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
-                      <input type="submit" value = "Search" class="btn btn-default subButton" data-toggle="modal" data-target="#memberModal"/>
+                      <input type="submit" id="myBtn" value = "Search" class="btn btn-default subButton" data-toggle="modal" data-target="#memberModal" />
                   </div>
                </form>
 	       </div>  	
@@ -341,7 +356,7 @@
 										<textarea  rows="4" class="form-control" name ="message" style="background: #a0a9af;"></textarea> 
 	        					   	</div>
 							        <div class="modal-footer">
-							       		<a href="user"><button type="submit" class="btn btn-info pull-left">Send Message</button></a>
+							       		<button type="submit" class="btn btn-info pull-left">Send Message</button>
 							        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 							        </div>
 						        </form>

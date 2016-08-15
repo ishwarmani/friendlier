@@ -102,10 +102,17 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public List<Messages> getAllMessages(int id) {
+	public List<Messages> getReceivedMessages(int id) {
 		// TODO Auto-generated method stub
-		return userDao.getAllMessages(id);
+		return userDao.getReceivedMessages(id);
 	}
+	
+	@Override
+	public List<Messages> getSentMessages(int id) {
+		// TODO Auto-generated method stub
+		return userDao.getSentMessages(id);
+	}
+
 
 	@Override
 	public List<PostCopy> getPostCopyList() {
@@ -128,12 +135,12 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public List<MessagesCopy> getAllMessagesCopy(int id) {
+	public List<MessagesCopy> getReceivedMessagesCopy(int id) {
 		
 		int counter = 0;
-		List<Messages> allmsgs = userDao.getAllMessages(id);
+		List<Messages> recMsgs = userDao.getReceivedMessages(id);
 		List<MessagesCopy> msgsCopy = new ArrayList<>();
-		for (Messages messages : allmsgs) {
+		for (Messages messages : recMsgs) {
 			MessagesCopy messagesCopy = new MessagesCopy();
 			messagesCopy.setsNo(++counter);
 			messagesCopy.setSendersName(userDao.findUserById(messages.getSenderId()).getName());
@@ -146,5 +153,49 @@ public class ServiceImpl implements IService {
 		return msgsCopy;
 	}
 
+	@Override
+	public List<MessagesCopy> getSentMessagesCopy(int id) {
+		int counter = 0;
+		List<Messages> sentMsgs = userDao.getSentMessages(id);
+		List<MessagesCopy> msgsCopy = new ArrayList<>();
+		for (Messages messages : sentMsgs) {
+			MessagesCopy messagesCopy = new MessagesCopy();
+			messagesCopy.setsNo(++counter);
+			messagesCopy.setSendersName(userDao.findUserById(messages.getSenderId()).getName());
+			messagesCopy.setMessage(messages.getMessage());
+			messagesCopy.setMsgDate(messages.getMsgDate());
+			messagesCopy.setSenderId(messages.getSenderId());
+			
+			msgsCopy.add(messagesCopy);
+		}
+		return msgsCopy;
+	}
+
+	@Override
+	public List<MessagesCopy> getAllConversations(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MessagesCopy> getChat(int senderId,int receiverId) {
+		int counter = 0;
+		List<Messages> chat = userDao.getChat(senderId,receiverId);
+		List<MessagesCopy> chatCopy = new ArrayList<>();
+		
+		for (Messages messages : chat) {
+			MessagesCopy messagesCopy = new MessagesCopy();
+			messagesCopy.setsNo(++counter);
+			messagesCopy.setSendersName(userDao.findUserById(messages.getSenderId()).getName());
+			messagesCopy.setMessage(messages.getMessage());
+			messagesCopy.setMsgDate(messages.getMsgDate());
+			messagesCopy.setSenderId(messages.getSenderId());
+			
+			chatCopy.add(messagesCopy);
+		}
+		return chatCopy;
+	}
+
+	
 	
 }
