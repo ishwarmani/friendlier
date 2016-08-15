@@ -124,6 +124,7 @@ public class ServiceImpl implements IService {
 			PostCopy postCopy = new PostCopy();
 			User user = userDao.findUserById(post.getWriterId());
 			String writersName = user.getName();
+			postCopy.setWriterId(post.getWriterId());
 			postCopy.setWriterName(writersName);
 			postCopy.setWriterPhoto(user.getPhoto());
 			postCopy.setContent(post.getContent());

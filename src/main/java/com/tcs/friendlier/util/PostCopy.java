@@ -3,12 +3,21 @@ package com.tcs.friendlier.util;
 import java.util.Date;
 
 public class PostCopy {
-
+	
+	private int writerId;
 	private String writerName;
 	private String content;
 	private Date contentDate;
 	private byte[] writerPhoto;
-
+	
+	public int getWriterId() {
+		return writerId;
+	}
+	
+	public void setWriterId(int writerId) {
+		this.writerId = writerId;
+	}
+	
 	public String getWriterName() {
 		return writerName;
 	}
