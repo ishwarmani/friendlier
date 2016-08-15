@@ -44,7 +44,17 @@
 
 	});
 </script>
-
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.subButton').attr('disabled', true);
+		$('#searchMembers').keyup(function() {
+			if ($(this).val().length != 0)
+				$('.subButton').attr('disabled', false);
+			else
+				$('.subButton').attr('disabled', true);
+		});
+	});
+</script>
 
 
 </head>
@@ -205,10 +215,11 @@
 							<input type="text" name="name" id="searchMembers"
 								placeholder="search members" class="form-control"
 								required="required" /> <input type="submit" value="Search"
-								class="btn btn-default subButton" data-toggle="modal"
-								data-target="#memberModal" />
+								class="btn btn-default subButton" />
 						</div>
 					</form>
+					<br /> <br /> <input type="button" value="View Searched User"
+						data-toggle="modal" data-target="#memberModal" />
 				</div>
 				<div class="modal fade" id="memberModal" role="dialog"
 					data-keyboard="false" data-backdrop="static">
@@ -219,26 +230,28 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
         </div> -->
-							<div class="modal-body">
+							<div th:if="${searchedUser.name != null}" class="modal-body">
 								<img class="userInfoPic pull-left img-rounded"
 									src="images/myimage.jpg" />
-								<div th:if="${searchedUser!=null}" class="pull-left"
-									style="padding-left: 10px;">
+								<div class="pull-left" style="padding-left: 10px;">
 
 
 									Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong
 										th:text="${searchedUser.name}">name</strong><br />
 									Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span
 										th:text="${searchedUser.getEmail()}"></span> <br /> Role
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span
-										th:text="${searchedUser.getRole()}"></span> <br /> Phone
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+									<span th:text="${searchedUser.getRole()}"></span> <br /> Phone
 									No.&nbsp;&nbsp;:<span th:text="${searchedUser.getPhone()}"></span>
 									<br />
 
 								</div>
 
 							</div>
-							<div class="modal-footer">
+							<div th:unless="${searchedUser.name != null}" class="modal-body">
+								Please Search a user First!!!!</div>
+
+							<div th:if="${searchedUser.name != null}" class="modal-footer">
 								<a href="user"><button type="button"
 										class="btn btn-info pull-left">View Profile</button></a> <a
 									href="addFriend"><button type="button"
@@ -246,6 +259,12 @@
 								<button type="button" class="btn btn-danger"
 									data-dismiss="modal">Close</button>
 							</div>
+							<div th:unless="${searchedUser.name != null}"
+								class="modal-footer">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">Close</button>
+							</div>
+
 						</div>
 
 					</div>
