@@ -11,17 +11,18 @@ public interface IService {
 	public int save(User user);
 
 	public User findUserById(int id, String password);
+
 	/*
 	 * for login authentication
 	 */
 	public User findUserByEmail(String email, String password);
-	
+
 	/*
 	 * for searching a user
 	 */
 	public User findUserByEmail(String email);
-	
-	public boolean updateStatus(int writerId,String content);
+
+	public boolean updateStatus(int writerId, String writerName, String content);
 
 	public List<User> getUserList();
 
@@ -30,7 +31,7 @@ public interface IService {
 	public void sendRequest(int senderId, int recieverId);
 
 	public void updateRequest(int senderId, int friendId);
-	
+
 	public void declineRequest(int senderId, int friendId);
 
 	public List<User> getFriendRequests(int id);

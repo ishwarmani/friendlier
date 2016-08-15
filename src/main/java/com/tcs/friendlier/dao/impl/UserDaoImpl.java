@@ -10,7 +10,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -35,6 +34,7 @@ public class UserDaoImpl implements IUserDao {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
+			System.out.println(user.getPhoto());
 			session.save(user);
 			transaction.commit();
 			session.close();
@@ -97,7 +97,7 @@ public class UserDaoImpl implements IUserDao {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public User findUserByEmail(String email) {
 		User user = null;
@@ -107,30 +107,31 @@ public class UserDaoImpl implements IUserDao {
 			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("email", email));
 			user = (User) criteria.uniqueResult();
 			transaction.commit();
-			return  user;
+			return user;
 		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
-	public boolean updateStatus(int writerId, String content) {
+	public boolean updateStatus(int writerId, String writerName, String content) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		Post post = new Post();
 		post.setWriterId(writerId);
+		post.setWriterName(writerName);
 		post.setContent(content);
 		post.setContentDate(new Date());
 		try {
 			session.save(post);
 			transaction.commit();
 			return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
@@ -149,7 +150,7 @@ public class UserDaoImpl implements IUserDao {
 			List<User> list = criteria.list();
 			transaction.commit();
 			return list;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
@@ -169,7 +170,7 @@ public class UserDaoImpl implements IUserDao {
 			List<Post> list = criteria.list();
 			transaction.commit();
 			return list;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
@@ -189,35 +190,34 @@ public class UserDaoImpl implements IUserDao {
 		try {
 			session.save(friendList);
 			transaction.commit();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		
-		
+
 	}
 
 	@Override
 	public void updateRequest(int senderId, int friendId) {
 		FriendList friendList = null;
-//		User user1 = findUserById(senderId);
-//		User user2 = findUserById(senderId);
-		
+		// User user1 = findUserById(senderId);
+		// User user2 = findUserById(senderId);
+
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
-		
+
 		try {
-			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId1", senderId)).
-					add(Restrictions.eq("userId2", friendId));
+			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId1", senderId))
+					.add(Restrictions.eq("userId2", friendId));
 			friendList = (FriendList) criteria.uniqueResult();
 			friendList.setStatus(Status.ACCEPTED.getValue());
-//			user1.setFriendCount(user1.getFriendCount()+1);
-//			user2.setFriendCount(user2.getFriendCount()+1);
+			// user1.setFriendCount(user1.getFriendCount()+1);
+			// user2.setFriendCount(user2.getFriendCount()+1);
 			session.update(friendList);
-//			session.update(user1);
-//			session.update(user2);
+			// session.update(user1);
+			// session.update(user2);
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
@@ -226,15 +226,15 @@ public class UserDaoImpl implements IUserDao {
 			session.close();
 		}
 	}
-	
+
 	@Override
 	public void declineRequest(int senderId, int friendId) {
 		FriendList friendList = null;
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId1", senderId)).
-					add(Restrictions.eq("userId2", friendId));
+			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId1", senderId))
+					.add(Restrictions.eq("userId2", friendId));
 			friendList = (FriendList) criteria.uniqueResult();
 			friendList.setStatus(Status.DECLINED.getValue());
 			session.update(friendList);
@@ -252,19 +252,20 @@ public class UserDaoImpl implements IUserDao {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId2",id))
+			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId2", id))
 					.add(Restrictions.eq("status", 0));
-//			Disjunction or = Restrictions.disjunction();
-//			or.add(Restrictions.eq("userId1",id));
-//			or.add(Restrictions.eq("userId2",id));
-//			criteria.add(or).add(Restrictions.eq("status", 0));
-			
-			/*Criteria criteria = session.createCriteria(FriendList.class)
-		    .add(Restrictions.disjunction()
-		        .add(Restrictions.eq("userId1",id))
-		        .add(Restrictions.eq("userId2",id))
-		    );*/
-			
+			// Disjunction or = Restrictions.disjunction();
+			// or.add(Restrictions.eq("userId1",id));
+			// or.add(Restrictions.eq("userId2",id));
+			// criteria.add(or).add(Restrictions.eq("status", 0));
+
+			/*
+			 * Criteria criteria = session.createCriteria(FriendList.class)
+			 * .add(Restrictions.disjunction()
+			 * .add(Restrictions.eq("userId1",id))
+			 * .add(Restrictions.eq("userId2",id)) );
+			 */
+
 			criteria.setMaxResults(10);
 			@SuppressWarnings("unchecked")
 			List<FriendList> list = criteria.list();
@@ -276,7 +277,7 @@ public class UserDaoImpl implements IUserDao {
 			}
 			transaction.commit();
 			return listUser;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
@@ -290,26 +291,24 @@ public class UserDaoImpl implements IUserDao {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-//			Criteria criteria = session.createCriteria(FriendList.class).add(Restrictions.eq("userId2",id))
-//					.add(Restrictions.eq("status", 1));
-//			Disjunction or = Restrictions.disjunction();
-//			or.add(Restrictions.eq("userId1",id));
-//			or.add(Restrictions.eq("userId2",id));
-//			criteria.add(or).add(Restrictions.eq("status", 0));
-			
-			Criteria criteria = session.createCriteria(FriendList.class)
-		    .add(Restrictions.disjunction()
-		        .add(Restrictions.eq("userId1",id))
-		        .add(Restrictions.eq("userId2",id))
-		    );
-			criteria.add(Restrictions.eq("status",1));
+			// Criteria criteria =
+			// session.createCriteria(FriendList.class).add(Restrictions.eq("userId2",id))
+			// .add(Restrictions.eq("status", 1));
+			// Disjunction or = Restrictions.disjunction();
+			// or.add(Restrictions.eq("userId1",id));
+			// or.add(Restrictions.eq("userId2",id));
+			// criteria.add(or).add(Restrictions.eq("status", 0));
+
+			Criteria criteria = session.createCriteria(FriendList.class).add(
+					Restrictions.disjunction().add(Restrictions.eq("userId1", id)).add(Restrictions.eq("userId2", id)));
+			criteria.add(Restrictions.eq("status", 1));
 			criteria.setMaxResults(10);
 			@SuppressWarnings("unchecked")
 			List<FriendList> list = criteria.list();
 			int temp = 0;
 			List<User> listUser = new ArrayList<>();
 			for (FriendList friendList : list) {
-				if(friendList.getUserId1() == id)
+				if (friendList.getUserId1() == id)
 					temp = friendList.getUserId2();
 				else
 					temp = friendList.getUserId1();
@@ -317,7 +316,7 @@ public class UserDaoImpl implements IUserDao {
 			}
 			transaction.commit();
 			return listUser;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
@@ -325,7 +324,7 @@ public class UserDaoImpl implements IUserDao {
 		}
 		return null;
 	}
-	
+
 	private User findUserById(int id) {
 		User user = null;
 		Session session = sessionFactory.openSession();
@@ -334,14 +333,14 @@ public class UserDaoImpl implements IUserDao {
 			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("id", id));
 			user = (User) criteria.uniqueResult();
 			transaction.commit();
-			return  user;
+			return user;
 		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		
+
 		return null;
 	}
 
@@ -366,20 +365,20 @@ public class UserDaoImpl implements IUserDao {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			Criteria criteria = session.createCriteria(Messages.class).add(Restrictions.eq("recieverId", id)).
-					addOrder(Order.desc("msgDate"));
+			Criteria criteria = session.createCriteria(Messages.class).add(Restrictions.eq("recieverId", id))
+					.addOrder(Order.desc("msgDate"));
 			criteria.setMaxResults(10);
 			@SuppressWarnings("unchecked")
 			List<Messages> list = criteria.list();
 			transaction.commit();
 			return list;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			transaction.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
 		return null;
-		}
+	}
 
 }

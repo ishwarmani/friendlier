@@ -37,7 +37,7 @@ public class ServiceImpl implements IService {
 		// TODO Auto-generated method stub
 		return userDao.findUserByEmail(email, password);
 	}
-	
+
 	@Override
 	public User findUserByEmail(String email) {
 		// TODO Auto-generated method stub
@@ -45,9 +45,9 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public boolean updateStatus(int writerId, String content) {
+	public boolean updateStatus(int writerId, String writerName, String content) {
 		// TODO Auto-generated method stub
-		return userDao.updateStatus(writerId,content);
+		return userDao.updateStatus(writerId, writerName, content);
 	}
 
 	@Override
@@ -65,19 +65,19 @@ public class ServiceImpl implements IService {
 	@Override
 	public void sendRequest(int senderId, int recieverId) {
 		// TODO Auto-generated method stub
-		userDao.sendRequest(senderId,recieverId);
+		userDao.sendRequest(senderId, recieverId);
 	}
 
 	@Override
 	public void updateRequest(int senderId, int friendId) {
 		// TODO Auto-generated method stub
-		userDao.updateRequest(senderId,friendId);
+		userDao.updateRequest(senderId, friendId);
 	}
 
 	@Override
 	public void declineRequest(int senderId, int friendId) {
 		// TODO Auto-generated method stub
-		userDao.declineRequest(senderId,friendId);
+		userDao.declineRequest(senderId, friendId);
 	}
 
 	@Override
@@ -104,5 +104,4 @@ public class ServiceImpl implements IService {
 		return userDao.getAllMessages(id);
 	}
 
-	
 }

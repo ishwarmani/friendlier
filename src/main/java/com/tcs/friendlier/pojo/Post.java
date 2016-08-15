@@ -17,6 +17,15 @@ public class Post {
 	private int id;
 
 	private int writerId;
+	private String writerName;
+
+	public String getWriterName() {
+		return writerName;
+	}
+
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
+	}
 
 	@Type(type = "text")
 	private String content;

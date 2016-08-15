@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
@@ -27,11 +28,9 @@ public class HomeController {
 
 	@Autowired
 	private IService service;
-	
+
 	List<User> data = new ArrayList<User>();
-	
-	User sUser = null;
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
@@ -46,7 +45,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView home(HttpSession httpSession) {
+	public ModelAndView home(@ModelAttribute("searchedUser") User searchedUser, HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (loggedInUser == null) {
@@ -55,27 +54,25 @@ public class HomeController {
 			return modelAndView;
 		}
 		List<Post> feed = service.getPostList();
-	//	List<PostCopy> feed2 = service.getPostList();
+		// List<PostCopy> feed2 = service.getPostList();
 		List<User> friendRequests = service.getFriendRequests(loggedInUser.getId());
 		List<User> friends = service.getFriends(loggedInUser.getId());
 		for (User user : friendRequests) {
 			System.out.println(user.getName());
 		}
-		
-		modelAndView.addObject("feed",feed);
-		modelAndView.addObject("friendRequests",friendRequests);
-		modelAndView.addObject("friends",friends);
+
+		modelAndView.addObject("feed", feed);
+		modelAndView.addObject("friendRequests", friendRequests);
+		modelAndView.addObject("friends", friends);
 		data = service.getUserList();
-		if(sUser == null){
-			sUser = loggedInUser;
-			httpSession.setAttribute("sUser", loggedInUser);
-		}
+		System.out.println("searchedUser " + searchedUser.getEmail());
 		modelAndView.setViewName("home");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/findUser", method = RequestMethod.POST)
-	public ModelAndView findUser(@RequestParam("name") String name,HttpSession httpSession) {
+	public ModelAndView findUser(@RequestParam("name") String name, HttpSession httpSession,
+			RedirectAttributes redirectAttributes) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (loggedInUser == null) {
@@ -83,20 +80,16 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/loginRegister");
 			return modelAndView;
 		}
-	//	String selectedName = name.split(",")[0];
+		// String selectedName = name.split(",")[0];
 		String selectedEmail = name.split(",   ")[1];
-		System.out.println("hey this the selected email");
+		System.out.println("hey this is the selected email");
 		System.out.println(selectedEmail);
-		sUser = service.findUserByEmail(selectedEmail);
-		httpSession.setAttribute("sUser", sUser);
-		
-		System.out.println("session "+httpSession.getAttribute("sUser"));
-		System.out.println("sUser normal "+ sUser);
-//		modelAndView.addObject("sUser", sUser);
-//		System.out.println("sUser of findUser post "+ sUser.getName() + " " + sUser.getId());
+		User searchedUser = service.findUserByEmail(selectedEmail);
+		redirectAttributes.addFlashAttribute("searchedUser", searchedUser);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
 	}
+
 	@RequestMapping(value = { "/loginRegister", "/login", "register" }, method = RequestMethod.GET)
 	public ModelAndView register(HttpSession httpSession) {
 		User loggedInUser = (User) httpSession.getAttribute("loggedInUser");
@@ -129,10 +122,6 @@ public class HomeController {
 		int success = service.save(user);
 		if (success == 1) {
 			httpSession.setAttribute("loggedInUser", user);
-			if(sUser == null){
-				sUser = loggedInUser;
-				httpSession.setAttribute("sUser", loggedInUser);
-			}
 			modelAndView.setViewName("redirect:/home");
 			return modelAndView;
 		} else {
@@ -156,25 +145,18 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/home");
 			return modelAndView;
 		}
-//		System.out.println("dummy: " + dummy);
-//		System.out.println(email_id + "/////" + password);
 		try {
 			int id = Integer.parseInt(email_id);
 			user = service.findUserById(id, password);
 		} catch (NumberFormatException numberFormatException) {
 			user = service.findUserByEmail(email_id, password);
 		}
-		System.out.println("user: " + user);
 		if (user == null) {
 			modelAndView.addObject("msg", "Invalid Credentials!");
 			modelAndView.setViewName("loginRegister");
 			return modelAndView;
 		}
 		httpSession.setAttribute("loggedInUser", user);
-		if(sUser == null){
-			sUser = user;
-			httpSession.setAttribute("sUser", user);
-		}
 		System.out.println(user.getName());
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
@@ -185,9 +167,10 @@ public class HomeController {
 		httpSession.invalidate();
 		return "redirect:/loginRegister";
 	}
-	
+
 	@RequestMapping(value = "/status", method = RequestMethod.POST)
-	public ModelAndView statusUpdate(@ModelAttribute User dummy, @RequestParam("content") String content, HttpSession httpSession) {
+	public ModelAndView statusUpdate(@ModelAttribute User dummy, @RequestParam("content") String content,
+			HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (user == null) {
@@ -195,33 +178,34 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
-	//	System.out.println(content);
+		// System.out.println(content);
+		String writerName = user.getName();
 		int writerId = user.getId();
-		boolean flag = service.updateStatus(writerId, content);
-	//	System.out.println(flag);
+		boolean flag = service.updateStatus(writerId, writerName, content);
+		// System.out.println(flag);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/getMembers", method = RequestMethod.GET)
 	public @ResponseBody List<User> getUsers(@RequestParam String name) {
-		
-	//	System.out.println("hello i m inside getMembers");
+
+		// System.out.println("hello i m inside getMembers");
 		List<User> result = new ArrayList<User>();
 		for (User user : data) {
-			if (user.getName().contains(name)) {
+			if (user.getName().toLowerCase().contains(name.toLowerCase())) {
 				result.add(user);
 			}
 		}
-		/*for (User user : result) {
-			System.out.println(user.getName());
-		}*/
+		/*
+		 * for (User user : result) { System.out.println(user.getName()); }
+		 */
 		return result;
-		
+
 	}
-	
-	@RequestMapping(value="/addFriend",method=RequestMethod.GET)
-	public ModelAndView addFriend(HttpSession httpSession){
+
+	@RequestMapping(value = "/addFriend", method = RequestMethod.GET)
+	public ModelAndView addFriend(HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (user == null) {
@@ -230,17 +214,17 @@ public class HomeController {
 			return modelAndView;
 		}
 		System.out.println("i m inside addFriend");
-		int senderId = ((User)httpSession.getAttribute("loggedInUser")).getId();
-		int recieverId = ((User)httpSession.getAttribute("sUser")).getId();
-		service.sendRequest(senderId,recieverId);
-		
+		int senderId = ((User) httpSession.getAttribute("loggedInUser")).getId();
+		int recieverId = ((User) httpSession.getAttribute("sUser")).getId();
+		service.sendRequest(senderId, recieverId);
+
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
-		
+
 	}
-	
-	@RequestMapping(value="/acceptRequest/{id}",method=RequestMethod.GET)
-	public ModelAndView acceptRequest(@PathVariable String id, HttpSession httpSession){
+
+	@RequestMapping(value = "/acceptRequest/{id}", method = RequestMethod.GET)
+	public ModelAndView acceptRequest(@PathVariable String id, HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		System.out.println("value in pathVarible is " + id);
@@ -249,15 +233,15 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
-		int friendId = ((User)httpSession.getAttribute("loggedInUser")).getId();
+		int friendId = ((User) httpSession.getAttribute("loggedInUser")).getId();
 		int senderId = Integer.parseInt(id);
-		service.updateRequest(senderId,friendId);
+		service.updateRequest(senderId, friendId);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
-		}
-	
-	@RequestMapping(value="/decline",method=RequestMethod.GET)
-	public ModelAndView decline(User friend, HttpSession httpSession){
+	}
+
+	@RequestMapping(value = "/decline", method = RequestMethod.GET)
+	public ModelAndView decline(User friend, HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (user == null) {
@@ -265,15 +249,16 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
-		int senderId = ((User)httpSession.getAttribute("loggedInUser")).getId();
+		int senderId = ((User) httpSession.getAttribute("loggedInUser")).getId();
 		int friendId = friend.getId();
-		service.declineRequest(senderId,friendId);
+		service.declineRequest(senderId, friendId);
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
-		}
-	
-	@RequestMapping(value="/sendMessage/{id}",method=RequestMethod.POST)
-	public ModelAndView sendMessage(@PathVariable String id,@RequestParam("message") String message,  HttpSession httpSession){
+	}
+
+	@RequestMapping(value = "/sendMessage/{id}", method = RequestMethod.POST)
+	public ModelAndView sendMessage(@PathVariable String id, @RequestParam("message") String message,
+			HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		System.out.println("value in pathVarible is " + id);
@@ -291,9 +276,9 @@ public class HomeController {
 		modelAndView.setViewName("redirect:/home");
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/messages",method=RequestMethod.GET)
-	public ModelAndView showMessages(HttpSession httpSession){
+
+	@RequestMapping(value = "/messages", method = RequestMethod.GET)
+	public ModelAndView showMessages(HttpSession httpSession) {
 		User user = (User) httpSession.getAttribute("loggedInUser");
 		ModelAndView modelAndView = new ModelAndView();
 		if (user == null) {
@@ -301,10 +286,10 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
-		
+
 		List<Messages> msgs = service.getAllMessages(user.getId());
-		modelAndView.addObject("msgs",msgs);
+		modelAndView.addObject("msgs", msgs);
 		modelAndView.setViewName("messages");
 		return modelAndView;
-		}
+	}
 }
