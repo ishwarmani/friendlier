@@ -5,6 +5,8 @@ import java.util.List;
 import com.tcs.friendlier.pojo.Messages;
 import com.tcs.friendlier.pojo.Post;
 import com.tcs.friendlier.pojo.User;
+import com.tcs.friendlier.util.MessagesCopy;
+import com.tcs.friendlier.util.PostCopy;
 
 public interface IService {
 
@@ -40,5 +42,17 @@ public interface IService {
 
 	public void updateMessages(Messages msg);
 
-	public List<Messages> getAllMessages(int id);
+	public List<Messages> getReceivedMessages(int id);
+	
+	public List<Messages> getSentMessages(int id);
+
+	public List<PostCopy> getPostCopyList();
+
+	public List<MessagesCopy> getReceivedMessagesCopy(int id);
+
+	public List<MessagesCopy> getSentMessagesCopy(int id);
+
+	public List<MessagesCopy> getAllConversations(int id);
+
+	public List<MessagesCopy> getChat(int senderId,int receiverId);
 }

@@ -55,17 +55,29 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/loginRegister");
 			return modelAndView;
 		}
+<<<<<<< HEAD
+		List<Post> feed = service.getPostList();
+		// List<PostCopy> feed2 = service.getPostList();
+=======
 //		List<Post> feed = service.getPostList();
 		List<PostCopy> feeder = service.getPostCopyList();
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 		List<User> friendRequests = service.getFriendRequests(loggedInUser.getId());
 		List<User> friends = service.getFriends(loggedInUser.getId());
 		for (User user : friendRequests) {
 			System.out.println(user.getName());
 		}
+<<<<<<< HEAD
+
+		modelAndView.addObject("feed", feed);
+		modelAndView.addObject("friendRequests", friendRequests);
+		modelAndView.addObject("friends", friends);
+=======
 		
 		modelAndView.addObject("feeder",feeder);
 		modelAndView.addObject("friendRequests",friendRequests);
 		modelAndView.addObject("friends",friends);
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 		data = service.getUserList();
 		System.out.println("searchedUser " + searchedUser.getEmail());
 		modelAndView.setViewName("home");
@@ -289,6 +301,14 @@ public class HomeController {
 			modelAndView.setViewName("redirect:/login");
 			return modelAndView;
 		}
+<<<<<<< HEAD
+
+		List<Messages> msgs = service.getAllMessages(user.getId());
+		modelAndView.addObject("msgs", msgs);
+		modelAndView.setViewName("messages");
+		return modelAndView;
+	}
+=======
 		
 	//	List<Messages> msgs = service.getAllMessages(user.getId());
 		List<MessagesCopy> msgsCopy = service.getReceivedMessagesCopy(user.getId());
@@ -354,4 +374,5 @@ public class HomeController {
 		return modelAndView;
 		}
 	
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 }

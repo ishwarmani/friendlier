@@ -10,8 +10,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+<<<<<<< HEAD
+=======
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -107,26 +110,6 @@ public class UserDaoImpl implements IUserDao {
 		Transaction transaction = session.beginTransaction();
 		try {
 			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("email", email));
-			user = (User) criteria.uniqueResult();
-			transaction.commit();
-			return user;
-		} catch (Exception e) {
-			transaction.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-
-		return null;
-	}
-	
-	@Override
-	public User findUserById(int id) {
-		User user = null;
-		Session session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
-		try {
-			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("id", id));
 			user = (User) criteria.uniqueResult();
 			transaction.commit();
 			return user;
@@ -344,6 +327,31 @@ public class UserDaoImpl implements IUserDao {
 		} finally {
 			session.close();
 		}
+		return null;
+	}
+<<<<<<< HEAD
+
+	private User findUserById(int id) {
+=======
+	
+	@Override
+	public User findUserById(int id) {
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
+		User user = null;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("id", id));
+			user = (User) criteria.uniqueResult();
+			transaction.commit();
+			return user;
+		} catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
 		return null;
 	}
 

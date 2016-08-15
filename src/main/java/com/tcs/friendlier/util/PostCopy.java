@@ -4,41 +4,43 @@ import java.util.Date;
 
 public class PostCopy {
 
-	private int sNo;
-	private String sendersName;
-	private String message;
-	private Date msgDate;
+	private String writerName;
+	private String content;
+	private Date contentDate;
+	private byte[] writerPhoto;
 
-	public int getsNo() {
-		return sNo;
+	public String getWriterName() {
+		return writerName;
 	}
 
-	public void setsNo(int sNo) {
-		this.sNo = sNo;
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
 	}
 
-	public String getSendersName() {
-		return sendersName;
+	public String getContent() {
+		return content;
 	}
 
-	public void setSendersName(String sendersName) {
-		this.sendersName = sendersName;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public String getMessage() {
-		return message;
+	public Date getContentDate() {
+		return contentDate;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setContentDate(Date contentDate) {
+		this.contentDate = contentDate;
 	}
 
-	public Date getMsgDate() {
-		return msgDate;
+	public byte[] getWriterPhoto() {
+		return writerPhoto;
 	}
 
-	public void setMsgDate(Date msgDate) {
-		this.msgDate = msgDate;
+	public void setWriterPhoto(byte[] writerPhoto) {
+		this.writerPhoto = writerPhoto;
 	}
+	
+	
 
 }

@@ -8,6 +8,7 @@
 <title>index</title>
 
 <!-- jQuery -->
+<<<<<<< HEAD
 <script src="js/jquery-2.2.4.min.js"></script>
 <!-- jQuery auto complete -->
 <script src="js/jquery.autocomplete.min.js"></script>
@@ -227,7 +228,241 @@
 						<!-- Modal content-->
 						<div class="modal-content">
 							<!-- <div class="modal-header">
- <button type="button" class="close" data-dismiss="modal">&times;</button>
+=======
+	<script src="/js/jquery-2.2.4.min.js"></script>
+<!-- jQuery auto complete -->
+	<script src="/js/jquery.autocomplete.min.js"></script>
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="/js/bootstrap.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+	<link rel="stylesheet" href="/css/index.css" />
+
+<script>
+	
+  	$(document).ready(function() {
+  		
+  	//	$("#myBtn").click(function() {
+  		//	alert("akjfhkajhfjk");
+  		//	$("#myForm").submit();
+  	//		$("#memberModal").modal("show");
+  		    /* $("#myForm").submit(function() {
+  		    		alert("submitted");
+  		  			}); */
+  	//	});
+  	//	$("#myForm").bind('ajax:complete',function(){
+  	//		$("#memberModal").modal("show");
+  	//		});
+  	
+  	
+  		$('#searchMembers').autocomplete({
+  			serviceUrl:'/getMembers',
+  			paramName: "name",
+  			delimiter: ",",
+  		    transformResult: function(response) {
+  		        return {
+  		            suggestions: $.map($.parseJSON(response), function(item) {
+  		                return { value: item.name+" ,   "
+ 		                	 + item.email,
+ 		                	 data: item.email };
+  		                	
+  		            })
+  		            
+  		        };
+  		        
+  		    }
+  		    
+  		});
+  		
+  	});
+ 
+  	</script>
+  	
+  	<script type="text/javascript">
+    	
+  	/* $(document).ready(function(){
+  	    $('.subButton').attr('disabled',true);
+  	    $('#searchMembers').keyup(function(){
+  	        if($(this).val().length !=0)
+  	        	 $('.subButton').attr('disabled', false);            
+  	        else
+  	        	 $('.subButton').attr('disabled',true);
+  	    })
+  	});  */
+  	
+  	</script>
+	
+</head>
+   <body style="background-color:#f6fbff">
+  
+      <div class="row no-gutter">
+         <nav class="navbar navbar-default" role="navigation" style="background: #45bfbb;">
+            <div class="navbar-header" >
+              <a href="/"><img src="images/friendlier.png" style="height: 50px; margin-left: 40px; margin-top: 15px;" /> </a> 
+              <img src="images/sociable.png" style="height: 35px; margin-top: 35px;" />
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNav" aria-expanded="false">
+               		<span class="sr-only">Toggle navigation</span>
+               		<span class="icon-bar"></span>
+               		<span class="icon-bar"></span>
+               </button>
+           	</div>
+            <div class="collapse navbar-collapse pull-right" id="myNav">
+               <ul class="nav navbar-nav">
+                  <li class="buttons">
+                     <a href="/home">
+                        <i class="fa fa-tachometer fa-lg" aria-hidden="true"></i>
+                        <!-- <img src="assets/icon_dashboard_hover.png" class="hover"> -->
+                        <b>Home</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover2">
+                     <a href="badge">
+                     <span class="fa-stack">
+                     <i class="fa fa-circle fa-stack-2x"></i>
+                     <i class="fa fa-star-o fa-stack-1x fa-inverse"></i>
+                     </span>
+                     <b>Profile</b>
+                     </a>
+                  </li>
+                  <li class="buttons buttonhover3">
+                     <a href="#">
+                        <i class="fa fa-wpforms fa-lg" aria-hidden="true"></i>
+                        <b>Friends</b>
+                     </a>
+                  </li>
+                  <li class="buttons">
+                     <a href="messages">
+                        <span class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <b>Messages</b>
+                     </a>
+                  </li>
+               </ul>
+               <!-- code for user profile button and dropdwon -->
+                  <div class = "dropdown pull-right">
+                 	 <a class = "btn dropdown-toggle" id = "dLabel" data-toggle="modal" href="#myModal" data-direction='top-right'>
+                        <img class="userInfoIcon img-rounded" src="images/myimage.jpg"/>
+                     </a>
+                     <div class="modal right fade modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-body">
+                                 <h4>Your Profile</h4>
+                                 <img class="userInfoPic pull-left img-rounded" src="images/myimage.jpg"/>
+                                  <div class="pull-left" style = "padding-left:10px;">
+                                    
+										Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong th:text="${session.loggedInUser.name}">name</strong><br />
+										Email-ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getEmail()}"></span> <br />
+										Role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span th:text="${session.loggedInUser.getRole()}"></span> <br />
+                                    	Phone No.&nbsp;&nbsp;:<span th:text="${session.loggedInUser.getPhone()}"></span> <br /> 
+                                    
+                                 </div>  
+                              </div>
+                              <div class="modal-footer">
+                                 <a class=" btn pull-right" href="/logout">Logout</a>
+                              </div>
+                           </div>
+                           <!-- modal-content -->
+                        </div>
+                        <!--modal-dialog -->
+                     </div>
+                     <!-- modal -->
+                  </div>
+            </div>
+         </nav>
+      </div>
+	
+		<!-- main body -->
+      <!-- karma section -->
+   <div class="container-fluid">
+	  <div class="col-sm-7 col-md-7 col-lg-9">
+         <div class="row">
+         </div>
+         <div class="col-sm-12">
+            <div class="panel panel-default">
+               <div class="panel-heading" id="recog-heading" >
+                  <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                  
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b>What's on your mind</b>
+               </div>
+               <form action = "/status" method="post">
+                  <div class="panel-body" style="background: #435159;">
+                     <div class="row">
+                        <div class="col-sm-12">
+                        	<div class="form-group">
+                              <textarea  rows="6" class="form-control" id="reason" name ="content" style="background: #a0a9af;"></textarea>
+                              </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-footer" style="background: #24313c;">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <input type="submit" value = "update" class="btn btn-primary recogbt" style="background: #1ab188;"/>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <!-- end karma -->
+            <!-- wall of fame -->
+            <div class="panel panel-default">
+               <div class="panel-heading" style="background: #1ab188;">
+                  <div class="row">
+                     <div class="col-lg-3" >
+                        <i class="fa fa-list-alt fa-2x" aria-hidden="false"></i> &nbsp;<font color="white">News Feed</font>
+                     </div>
+                  </div>
+               </div>
+               <div class="panel-body">
+                  <div class="row" style="padding-top: 20px;">
+		              <div  th:each="post:${feeder}">
+			            <div class="col-xs-12" >
+			            	<div class="col-xs-2 " style = "text-align: center;">
+			                   <img class="imager wallOfFamePost img-rounded" src="/images/myimage.jpg"/>
+			                </div>
+			                <div class="col-xs-10 ">
+						       <strong th:text="${post.writerName}" > </strong> <br/>
+						       <label th:text="${post.content}"></label><br/> 
+						       Date : <i th:text="${post.contentDate}"></i><hr>  </hr>
+			            	</div>
+			            </div>
+		            	<hr/>
+		            </div>  
+                     
+                  </div>
+               </div>
+            </div>
+            <!-- end wall of fame -->
+         </div>
+      </div>
+  		<script>
+  		
+  		</script>
+  	<div class="col-lg-3 col-sm-5 col-md-5 ">
+  	
+  	<!-- <input type="text" name="user" class="form-control" id="searchMembers1" placeholder="Select a newer"/> -->
+  	<div class="row">
+	     <div class="panel-body">
+              <form id="myForm" class="form-inline" method="post" action="/findUser">
+                  <div class="form-group">
+                      <input type="text" name="name" id = "searchMembers" placeholder = "search members" class="form-control" required="required" />
+                      <input type="submit" id="myBtn" value = "Search" class="btn btn-default subButton" data-toggle="modal" data-target="#memberModal" />
+                  </div>
+               </form>
+	       </div>  	
+        <div class="modal fade" id="memberModal" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
         </div> -->
 							<div th:if="${searchedUser.name != null}" class="modal-body">
@@ -389,6 +624,7 @@
 
 						</div>
 					</div>
+<<<<<<< HEAD
 				</div>
 
 			</div>
@@ -399,6 +635,54 @@
 						<img width="25" height="25" src="images/friendRequest.jpg" />
 						&nbsp;&nbsp;&nbsp;&nbsp;<font color="white">Requests and
 							Suggestions</font>
+=======
+					<div class="modal fade" id="messageModal" role="dialog" data-keyboard="false" data-backdrop="static">
+       					<div class="modal-dialog">
+    
+     						 <!-- Modal content-->
+      						<div class="modal-content">
+      							<div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal">&times;</button>
+							        <h4 class="modal-title">Message</h4>
+							    </div>
+							    <form th:action="@{/sendMessage/} + ${frnds.id}" method="post">
+	        						<div class="modal-body">
+	          							<strong th:text="${frnds.name}">name</strong><br />
+										<textarea  rows="4" class="form-control" name ="message" style="background: #a0a9af;"></textarea> 
+	        					   	</div>
+							        <div class="modal-footer">
+							       		<button type="submit" class="btn btn-info pull-left">Send Message</button>
+							        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							        </div>
+						        </form>
+      					   </div>
+      
+	    </div>
+	  </div>
+            	</div>
+            </div>	
+ 
+            </div>
+	 		</div>
+ 		</div>
+
+ 	</div>
+ 	<div class="row">
+ 		<div class="panel panel-default">
+ 			<div class="panel-heading" id="badges-heading" style="background: #1ab188;" >
+                <img class="recognizeKarmaIcon" src="images/icon_badge.png"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<font color="white">Requests and Suggestions</font>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+            	
+              <div  th:each="fReq:${friendRequests}">
+            	<div class = "panel-body">
+            		<div class="col-xs-5">
+						<div class="row">
+							<img class="sideBatchPic img-rounded" src="images/myimage.jpg"/>
+						</div>		
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 					</div>
 					<div class="panel-body">
 						<div class="row">

@@ -153,6 +153,8 @@ public class ServiceImpl implements IService {
 		return msgsCopy;
 	}
 
+<<<<<<< HEAD
+=======
 	@Override
 	public List<MessagesCopy> getSentMessagesCopy(int id) {
 		int counter = 0;
@@ -195,4 +197,8 @@ public class ServiceImpl implements IService {
 		}
 		return chatCopy;
 	}
+
+	
+	
+>>>>>>> e38beca93425e9f125780326ce549d45344bb088
 }
